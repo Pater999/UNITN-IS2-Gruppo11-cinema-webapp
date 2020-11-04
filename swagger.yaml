@@ -7,7 +7,7 @@ info:
     name: MIT
     url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
 host: polls.apiblueprint.org
-basePath: /
+basePath: /api
 schemes:
 - https
 consumes:

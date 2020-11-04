@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { films } from './films';
+import { admin } from './admin';
 // ...
 
 const app = express();
@@ -19,7 +20,7 @@ app.use((req: any, res: express.Response, next: express.NextFunction) => {
 });
 
 app.use('/api/v1/films', films);
-// ...
+app.use('/api/v1/admin', admin);
 
 /* Default 404 handler */
 app.use((req: express.Request, res: express.Response) => {

@@ -31,10 +31,10 @@ paths:
             properties:
               username:
                 type: string
-                description: 'Username of the admin'
+                description: "Username of the admin"
               password:
                 type: string
-                description: 'Password of the admin'
+                description: "Password of the admin"
       responses:
         200:
           description: Logged in correctly
@@ -42,6 +42,75 @@ paths:
             $ref: '#/definitions/LogInAdminDTO'
         401:
           description: Admin not logged in correctly
+          
+  /v1/admin/fares:
+    get:
+      summary: "List all the tickets' fares"
+      responses:
+        200:
+          description: "Collection of tickets' fares"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/FareDTO"
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+    post:
+      summary: "Add a new tickets' fare"
+      parameters:
+        - in: body
+          name: fare
+          required: true
+          
+          schema:
+            type: object
+            required:
+              - name
+              - price
+              - desc
+        
+            properties:
+              name:
+                type: string
+                description: "fare's name"
+              price: 
+                type: number
+                description: "fare's price"
+              desc:
+                type: string
+                description: "fare's description"
+          
+      responses:
+        201:
+          description: 'Successful add, the fare added'
+          schema:
+              $ref: '#/definitions/FareDTO'
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /v1/admin/fares/{fareId}:
+    parameters:
+    - name: "fareId"
+      in: "path"
+      description: "id of the fare"
+      required: true
+      type: "integer"
+      format: "int32"
+    delete:
+      summary: "Delete a fare"
+      responses:
+        200:
+          description: Successful response
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+        404:
+          description: Fare not found
           
 definitions:
   LogInAdminDTO:
@@ -57,3 +126,27 @@ definitions:
       username:
         type: string
         description: 'Admin username'
+        
+        
+  FareDTO:
+    type: object
+    required:
+      - fareId
+      - name
+      - price
+      - desc
+      
+    properties:
+      fareId:
+        type: integer
+        format: "int32"
+        description: "fare's id"
+      name:
+        type: string
+        description: "fare's name"
+      price: 
+        type: number
+        description: "fare's price"
+      desc:
+        type: string
+        description: "fare's description"

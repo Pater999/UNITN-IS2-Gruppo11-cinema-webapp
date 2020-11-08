@@ -213,7 +213,55 @@ paths:
           description: Cinema's room not found
         409:
           description: "Conflict: cannot delete a room with active reservations or actions"
-          
+  
+  /v1/admin/rooms/{roomId}/rows:
+    parameters:
+    - name: "roomId"
+      in: "path"
+      description: "id of the cinema's room"
+      required: true
+      type: "integer"
+      format: "int32"
+    get:
+      summary: "List all rows of a room"
+      responses:
+        200:
+          description: "Collection of room's row"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/RoomRowDTO"
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+    post:
+      summary: "Add a new row to a room"
+      parameters:
+        - in: body
+          name: room
+          required: true
+          schema:
+            type: object
+            required:
+              - seatsNumber
+        
+            properties:
+              seatsNumber:
+                type: integer
+                description: "row seats"
+      responses:
+        201:
+          description: 'Successful add, row added'
+          schema:
+              $ref: '#/definitions/RoomRowDTO'
+        400:
+          description: Some fields are null or empty
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+                
 definitions:
   LogInAdminDTO:
     type: object
@@ -253,14 +301,28 @@ definitions:
         type: string
         description: "fare's description"
   
-        
+  RoomRowDTO:
+    type: object
+    required:
+      - rowId
+      - seatsNumber
+
+    properties:
+      rowId:
+        type: integer
+        format: "int32"
+        description: "room's id"
+      seatsNumber: 
+        type: number
+        description: "number of seats"
+
   CinemaRoomDTO:
     type: object
     required:
       - roomId
       - name
       - seats
-      
+
     properties:
       roomId:
         type: integer

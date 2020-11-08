@@ -40,8 +40,11 @@ paths:
           description: Logged in correctly
           schema:
             $ref: '#/definitions/LogInAdminDTO'
+        400:
+          description: User or password not specified
         401:
           description: Admin not logged in correctly
+        
           
   /v1/admin/fares:
     get:
@@ -87,6 +90,8 @@ paths:
           description: 'Successful add, the fare added'
           schema:
               $ref: '#/definitions/FareDTO'
+        400:
+          description: Some fields are null or empty
         401:
           description: Admin not logged in
         403:
@@ -105,12 +110,107 @@ paths:
       responses:
         200:
           description: Successful response
+        400:
+          description: fareId is NaN or empty
         401:
           description: Admin not logged in
         403:
           description: Not authorized to do this action
         404:
           description: Fare not found
+  
+  /v1/admin/rooms:
+    get:
+      summary: "List all cinema's rooms"
+      responses:
+        200:
+          description: "Collection of cinema's rooms"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CinemaRoomDTO"
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+    post:
+      summary: "Add a new cinema's room"
+      parameters:
+        - in: body
+          name: room
+          required: true
+          
+          schema:
+            type: object
+            required:
+              - name
+        
+            properties:
+              name:
+                type: string
+                description: "room's name"
+          
+      responses:
+        201:
+          description: 'Successful add, room added'
+          schema:
+              $ref: '#/definitions/CinemaRoomDTO'
+        400:
+          description: Some fields are null or empty
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+          
+  /v1/admin/rooms/{roomId}:
+    parameters:
+    - name: "roomId"
+      in: "path"
+      description: "id of the cinema's room"
+      required: true
+      type: "integer"
+      format: "int32"
+    put:
+      summary: Update a cinema's room
+      parameters:
+        - in: body
+          name: room
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "Room's name"
+      responses:
+        200:
+          description: "Successful update, cinema's room update"
+          schema:
+            $ref: '#/definitions/CinemaRoomDTO'
+        400:
+          description: Some fields are null or empty
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+        404:
+          description: Cinema's room not found
+          
+    delete:
+      summary: "Delete a cinema room"
+      responses:
+        200:
+          description: Successful response, room deleted
+        400:
+          description: roomId is NaN or empty
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+        404:
+          description: Cinema's room not found
+        409:
+          description: "Conflict: cannot delete a room with active reservations or actions"
           
 definitions:
   LogInAdminDTO:
@@ -150,3 +250,23 @@ definitions:
       desc:
         type: string
         description: "fare's description"
+  
+        
+  CinemaRoomDTO:
+    type: object
+    required:
+      - roomId
+      - name
+      - seats
+      
+    properties:
+      roomId:
+        type: integer
+        format: "int32"
+        description: "room's id"
+      name:
+        type: string
+        description: "room's name"
+      seats: 
+        type: number
+        description: "number of seats"

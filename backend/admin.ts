@@ -1,6 +1,7 @@
 import express from 'express';
 import { FareDto} from './models/DTO/FareDto';
 import { FakeDatabase } from './Database/fakeDatabase';
+import { RoomDTO } from './models/DTO/RoomDTO';
  
 const router = express.Router();
 
@@ -52,7 +53,7 @@ router.post("/fares", (req: any, res: express.Response) => {
     }
 });
 
-router.delete("/fares/:fareId", (req, res) => {
+router.delete("/fares/:fareId", (req: any, res: express.Response) => {
     let id = Number(req.params.fareId);
     if(isNaN(id))
         res.status(400).json({ error: "Some Fields are null or empty!" });
@@ -72,6 +73,65 @@ router.delete("/fares/:fareId", (req, res) => {
         else
         {
             res.status(409).json({ error: "Deve esserci almeno una Tariffa!" });
+        }
+    }
+});
+
+//#endregion
+
+//#region room
+router.get("/rooms", (req: any, res: express.Response) => {
+    res.status(200).json(FakeDatabase.Rooms);
+})
+
+router.post("/rooms", (req: any, res: express.Response) => {
+    let name = req.body.name;
+
+    if (!name)
+        res.status(400).json({ error: "Bad request" });
+    else
+    {
+        let elem = new RoomDTO(FakeDatabase.Rooms.length+1, name, 0);
+        FakeDatabase.Rooms.push(elem);
+        res.status(201).json(elem);
+    }
+});
+
+router.delete("/rooms/:roomId", (req: any, res: express.Response) => {
+    let id = Number(req.params.roomId);
+    if(isNaN(id))
+        res.status(400).json({ error: "Bad request" });
+    else
+    {
+        let index = FakeDatabase.Rooms.findIndex(item => item.Id == id);
+        if(index == -1)
+            res.status(400).json({ error: "Room not found" });
+        else
+        {
+            FakeDatabase.Rooms.splice(index, 1);
+            res.status(200).json({ message: "elemet removed" });
+        }
+    }
+});
+
+router.put("/rooms/:roomId", (req: any, res: express.Response) => {
+    let id = Number(req.params.roomId);
+    if(isNaN(id))
+        res.status(400).json({ error: "Bad request" });
+    else
+    {
+        let name = req.body.name;
+
+        if (!name)
+            res.status(400).json({ error: "Bad request" });
+
+        let index = FakeDatabase.Rooms.findIndex(item => item.Id == id);
+        if(index == -1)
+            res.status(400).json({ error: "Room not found" });
+        else
+        {
+            const elem = FakeDatabase.Rooms[index].Name = name;
+            res.status(200).json(elem);
         }
     }
 });

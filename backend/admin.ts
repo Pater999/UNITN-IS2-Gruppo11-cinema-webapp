@@ -11,12 +11,12 @@ router.post('/login', (req: any, res: express.Response) =>{
     const password = req.body.password;
 
     if (!username) {
-        res.status(400).json({ error: 'User not specified' });
+        res.status(400).json({ error: 'Campo Utente vuoto o null' });
         return;
     }
 
     if (!password) {
-        res.status(400).json({ error: 'Password not specified' });
+        res.status(400).json({ error: 'Campo Password vuoto o null' });
         return;
     }
 
@@ -25,7 +25,7 @@ router.post('/login', (req: any, res: express.Response) =>{
         res.status(200).json({ token, username });
         return;
     } else {
-        res.status(401).json({ error: 'Admin not logged in correctly' });
+        res.status(401).json({ error: 'Username o Password non corretti!' });
     }
 
 })
@@ -43,7 +43,7 @@ router.post("/fares", (req: any, res: express.Response) => {
     let desc = req.body.desc;
 
     if (!name || isNaN(price) || !desc)
-        res.status(400).json({ error: "Bad request" });
+        res.status(400).json({ error: "Some Fields are null or empty!" });
     else
     {
         let elem = new FareDto(FakeDatabase.Fares.length+1, name, price, desc);
@@ -55,16 +55,23 @@ router.post("/fares", (req: any, res: express.Response) => {
 router.delete("/fares/:fareId", (req, res) => {
     let id = Number(req.params.fareId);
     if(isNaN(id))
-        res.status(400).json({ error: "Bad request" });
+        res.status(400).json({ error: "Some Fields are null or empty!" });
     else
     {
-        let index = FakeDatabase.Fares.findIndex(item => item.Id == id);
-        if(index == -1)
-            res.status(400).json({ error: "Fare not found" });
+        if(FakeDatabase.Fares.length > 1)
+        {
+            let index = FakeDatabase.Fares.findIndex(item => item.Id == id);
+            if(index == -1)
+                res.status(404).json({ error: "Tariffa non trovata!" });
+            else
+            {
+                FakeDatabase.Fares.splice(index, 1);
+                res.status(200).json({ message: "Tariffa rimossa con successo!" });
+            }
+        }
         else
         {
-            FakeDatabase.Fares.splice(index, 1);
-            res.status(200).json({ message: "elemet removed" });
+            res.status(409).json({ error: "Deve esserci almeno una Tariffa!" });
         }
     }
 });

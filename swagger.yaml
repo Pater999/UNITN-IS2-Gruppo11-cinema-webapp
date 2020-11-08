@@ -118,6 +118,8 @@ paths:
           description: Not authorized to do this action
         404:
           description: Fare not found
+        409:
+          description: "Conflict: cannot delete a Fare if it is the only one left"
   
   /v1/admin/rooms:
     get:

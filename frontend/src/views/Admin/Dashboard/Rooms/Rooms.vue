@@ -1,6 +1,6 @@
 <template>
   <div v-loading="isLoading">
-    <div class="d-flex mt-5">
+    <div class="d-flex">
       <h3>Sale</h3>
       <el-button
         class="ml-auto"
@@ -12,12 +12,12 @@
     </div>
     <template>
       <el-table :data="Rooms" style="width: 100%">
-        <el-table-column label="Nome" width="180">
+        <el-table-column label="Nome">
           <template slot-scope="scope">
             {{ scope.row.Name }}
           </template>
         </el-table-column>
-        <el-table-column label="Posti" width="300">
+        <el-table-column label="Posti">
           <template slot-scope="scope">
             {{ scope.row.Seats }}
           </template>

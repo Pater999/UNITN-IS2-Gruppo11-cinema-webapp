@@ -9,10 +9,11 @@
       </el-submenu>
     </el-menu>
     <div class="mx-5 mt-4">
-
-      <Fares />
-      <AdminRooms />
-
+      <div class="row">
+        <div class="col-md-6"><Fares /></div>
+        <div class="col-md-6"><AdminRooms /></div>
+        <div class="col-md-6"><AdminMovies /></div>
+      </div>
       <h3>Programmazione</h3>
       <h3>Menu</h3>
     </div>

@@ -12,17 +12,17 @@
     </div>
     <template>
       <el-table :data="Fares" style="width: 100%">
-        <el-table-column label="Nome" width="180">
+        <el-table-column label="Nome">
           <template slot-scope="scope">
             {{ scope.row.Name }}
           </template>
         </el-table-column>
-        <el-table-column label="Descrizione" width="300">
+        <el-table-column label="Descrizione">
           <template slot-scope="scope">
             {{ scope.row.Desc }}
           </template>
         </el-table-column>
-        <el-table-column label="Prezzo" width="180">
+        <el-table-column label="Prezzo">
           <template slot-scope="scope">
             {{ showPrice(scope.row.Price) }}€
           </template>

@@ -7,7 +7,7 @@ info:
     name: MIT
     url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
 host: polls.apiblueprint.org
-basePath: /api
+basePath: /api/v1
 schemes:
 - https
 consumes:
@@ -15,7 +15,7 @@ consumes:
 produces:
 - application/json
 paths:
-  /v1/admin/login:
+  /admin/login:
     x-summary: Login
     post:
       summary: Send login data
@@ -46,7 +46,7 @@ paths:
           description: Admin not logged in correctly
         
           
-  /v1/admin/fares:
+  /admin/fares:
     get:
       summary: "List all the tickets' fares"
       responses:
@@ -97,7 +97,7 @@ paths:
         403:
           description: Not authorized to do this action
           
-  /v1/admin/fares/{fareId}:
+  /admin/fares/{fareId}:
     parameters:
     - name: "fareId"
       in: "path"
@@ -121,7 +121,7 @@ paths:
         409:
           description: "Conflict: cannot delete a Fare if it is the only one left"
   
-  /v1/admin/rooms:
+  /admin/rooms:
     get:
       summary: "List all cinema's rooms"
       responses:
@@ -164,7 +164,7 @@ paths:
         403:
           description: Not authorized to do this action
           
-  /v1/admin/rooms/{roomId}:
+  /admin/rooms/{roomId}:
     parameters:
     - name: "roomId"
       in: "path"
@@ -214,7 +214,7 @@ paths:
         409:
           description: "Conflict: cannot delete a room with active reservations or actions"
   
-  /v1/admin/rooms/{roomId}/rows:
+  /admin/rooms/{roomId}/rows:
     parameters:
     - name: "roomId"
       in: "path"
@@ -262,7 +262,7 @@ paths:
         403:
           description: Not authorized to do this action
   
-  /v1/admin/movies:
+  /admin/movies:
     get:
         summary: "List all the movies"
         responses:

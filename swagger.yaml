@@ -317,11 +317,15 @@ definitions:
   MovieDTO:
     type: object
     required:
+      - movieId
       - imageUrl
       - title
       - desc
       
     properties:
+        movieId:
+          type: number
+          description: "Movie's Id"
         imageUrl:
           type: string
           description: "Movie's image Url"

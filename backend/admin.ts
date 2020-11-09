@@ -2,7 +2,9 @@ import express from 'express';
 import { FareDto} from './models/DTO/FareDto';
 import { FakeDatabase } from './Database/fakeDatabase';
 import { RoomDTO } from './models/DTO/RoomDTO';
- 
+import { MovieDTO } from './models/DTO/MovieDTO';
+import { isValidURL } from './Utilities/isValidURL'
+
 const router = express.Router();
 
 //#region LoginAdmin
@@ -82,7 +84,7 @@ router.delete("/fares/:fareId", (req: any, res: express.Response) => {
 //#region room
 router.get("/rooms", (req: any, res: express.Response) => {
     res.status(200).json(FakeDatabase.Rooms);
-})
+});
 
 router.post("/rooms", (req: any, res: express.Response) => {
     let name = req.body.name;
@@ -136,6 +138,27 @@ router.put("/rooms/:roomId", (req: any, res: express.Response) => {
     }
 });
 
+//#endregion
+
+//#region Movies
+router.get("/movies", (req: any, res: express.Response) => {
+    res.status(200).json(FakeDatabase.Movies);
+});
+
+router.post("/movies", (req: any, res: express.Response) => {
+    let title = req.body.title;
+    let desc = req.body.desc;
+    let imageUrl = req.body.imageUrl;
+
+    if (!title || !desc || !imageUrl || !isValidURL(imageUrl))
+        res.status(400).json({ error: "Some Fields are null or empty!" });
+    else
+    {
+        let elem = new MovieDTO(FakeDatabase.Movies.length+1, title, desc, imageUrl);
+        FakeDatabase.Movies.push(elem);
+        res.status(201).json(elem);
+    }
+});
 //#endregion
 
 export { router as admin };

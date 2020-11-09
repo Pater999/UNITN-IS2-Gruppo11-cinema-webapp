@@ -261,8 +261,77 @@ paths:
           description: Admin not logged in
         403:
           description: Not authorized to do this action
-                
+  
+  /v1/admin/movies:
+    get:
+        summary: "List all the movies"
+        responses:
+          200:
+            description: "Collection of movies"
+            schema:
+              type: array
+              items:
+                $ref: "#/definitions/MovieDTO"
+          401:
+            description: Admin not logged in
+          403:
+            description: Not authorized to do this action
+    post:
+        summary: "Add a new Movie"
+        parameters:
+          - in: body
+            name: movie
+            required: true
+            
+            schema:
+              type: object
+              required:
+                - imageUrl
+                - title
+                - desc
+          
+              properties:
+                title:
+                  type: string
+                  description: "movie's name"
+                imageUrl: 
+                  type: string
+                  description: "movie's image"
+                desc:
+                  type: string
+                  description: "movie's description"
+            
+        responses:
+          201:
+            description: 'Successful add, the movie added'
+            schema:
+                $ref: '#/definitions/MovieDTO'
+          400:
+            description: Some fields are null or empty
+          401:
+            description: Admin not logged in
+          403:
+            description: Not authorized to do this action
+
 definitions:
+  MovieDTO:
+    type: object
+    required:
+      - imageUrl
+      - title
+      - desc
+      
+    properties:
+        imageUrl:
+          type: string
+          description: "Movie's image Url"
+        title:
+          type: string
+          description: "Movie's title"
+        desc:
+          type: string
+          description: "Movie desc"
+
   LogInAdminDTO:
     type: object
     required:
@@ -276,8 +345,7 @@ definitions:
       username:
         type: string
         description: 'Admin username'
-        
-        
+
   FareDTO:
     type: object
     required:

@@ -46,6 +46,49 @@ paths:
           description: Admin not logged in correctly
         
           
+          
+  /users:
+    x-summary: Register
+    post:
+      summary: Send register data
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+              - surname
+              - username
+              - email
+              - password
+            properties:
+              name:
+                type: string
+                description: "Name of the user"
+              surname:
+                type: string
+                description: "Surname of the user"
+              username:
+                type: string
+                description: "Username of the user"
+              email:
+                type: string
+                description: "Email of the user"
+              password:
+                type: string
+                description: "Password of the user"
+      responses:
+        200:
+          description: Registered correctly
+          schema:
+            $ref: '#/definitions/RegisterDTO'
+        400:
+          description: Some fields are null or empty
+        409:
+          description: Username already taken
+    
   /admin/fares:
     get:
       summary: "List all the tickets' fares"
@@ -423,6 +466,32 @@ definitions:
       username:
         type: string
         description: 'Admin username'
+  
+  RegisterDTO:
+    type: object
+    required:
+      - id
+      - username
+      - email
+      - name
+      - surname
+
+    properties:
+      id:
+        type: string
+        description: 'User id'
+      username:
+        type: string
+        description: 'User username'
+      email:
+        type: string
+        description: 'User email'
+      name:
+        type: string
+        description: 'User name'
+      surname:
+        type: string
+        description: 'User surname'
 
   FareDTO:
     type: object

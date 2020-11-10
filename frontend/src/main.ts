@@ -1,11 +1,10 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
 import Vue from 'vue'
-
 import 'bootstrap/dist/css/bootstrap.css'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
-const locale = require('@fortawesome/vue-fontawesome');
+//const locale = require('element-ui/lib/locale/lang/en');
+import locale from 'element-ui/lib/locale/lang/it'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // import { library } from '@fortawesome/fontawesome-svg-core'

@@ -4,6 +4,8 @@ import { FakeDatabase } from './Database/fakeDatabase';
 import { RoomDTO } from './models/DTO/RoomDTO';
 import { MovieDTO } from './models/DTO/MovieDTO';
 import { isValidURL } from './Utilities/isValidURL'
+import { PlanningDTO } from './models/DTO/PlanningDTO';
+import Planning from "./models/DTO/Planning";
 
 const router = express.Router();
 
@@ -154,9 +156,51 @@ router.post("/movies", (req: any, res: express.Response) => {
         res.status(400).json({ error: "Some Fields are null or empty!" });
     else
     {
-        let elem = new MovieDTO(FakeDatabase.Movies.length+1, title, desc, imageUrl, []);
+        let elem = new MovieDTO(FakeDatabase.Movies.length+1, imageUrl, title, desc, []);
         FakeDatabase.Movies.push(elem);
         res.status(201).json(elem);
+    }
+});
+//#endregion
+
+//#region Plannings
+router.post("/movies/:movieId/plannings", (req: any, res: express.Response) => {
+    let id = Number(req.params.movieId);
+    let plannings = req.body.planning;
+
+    if (isNaN(id) || !plannings)
+        res.status(400).json({ error: "Some Fields are null or empty!" });
+    else
+    {
+        let index = FakeDatabase.Movies.findIndex(item => item.Id == id);
+        if(index != -1)
+        {
+            (plannings as Planning[]).forEach(plan => 
+            {
+                const roomIndex = FakeDatabase.Rooms.findIndex(room => room.Id == plan.RoomId);
+                if (roomIndex != -1) 
+                    FakeDatabase.Movies[index].Plans.push(new PlanningDTO(plan.Date, FakeDatabase.Rooms[roomIndex]));
+            })
+        }
+            
+        res.status(201).json(FakeDatabase.Movies[index]);
+    }
+});
+
+router.delete("/movies/:movieId/plannings", (req: any, res: express.Response) => {
+    let id = Number(req.params.movieId);
+    if(isNaN(id))
+        res.status(400).json({ error: "Bad request" });
+    else
+    {
+        let index = FakeDatabase.Movies.findIndex(item => item.Id == id);
+        if(index == -1)
+            res.status(400).json({ error: "Movie not found" });
+        else
+        {
+            FakeDatabase.Movies.splice(index, 1);
+            res.status(200).json({ message: "elemet removed" });
+        }
     }
 });
 //#endregion

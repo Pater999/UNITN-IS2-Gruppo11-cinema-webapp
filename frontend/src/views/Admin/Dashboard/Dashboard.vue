@@ -14,8 +14,6 @@
         <div class="col-md-6"><AdminRooms /></div>
         <div class="col-md-6"><AdminMovies /></div>
       </div>
-      <h3>Programmazione</h3>
-      <h3>Menu</h3>
     </div>
   </div>
 </template>

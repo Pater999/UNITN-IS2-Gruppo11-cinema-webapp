@@ -1,4 +1,3 @@
-
 export class RoomDTO
 {
     Id: number;

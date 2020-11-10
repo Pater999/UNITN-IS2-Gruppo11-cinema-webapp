@@ -154,7 +154,7 @@ router.post("/movies", (req: any, res: express.Response) => {
         res.status(400).json({ error: "Some Fields are null or empty!" });
     else
     {
-        let elem = new MovieDTO(FakeDatabase.Movies.length+1, title, desc, imageUrl);
+        let elem = new MovieDTO(FakeDatabase.Movies.length+1, title, desc, imageUrl, []);
         FakeDatabase.Movies.push(elem);
         res.status(201).json(elem);
     }

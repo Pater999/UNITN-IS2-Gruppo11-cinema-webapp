@@ -312,8 +312,76 @@ paths:
             description: Admin not logged in
           403:
             description: Not authorized to do this action
+    
+  /admin/movies/:{movieId}/plannings:
+    parameters:
+    - name: "movieId"
+      in: "path"
+      description: "id of the movie"
+      required: true
+      type: "integer"
+      format: "int32"
+    post:
+        summary: "Add plannings for a movie"
+        parameters:
+          - in: body
+            name: planning
+            required: true
+            
+            schema:
+              type: object
+              required:
+                - plannings
+          
+              properties:
+                plannings:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - roomId
+                      - date
+                    properties:
+                      roomId:
+                        type: number
+                        description: "Movie's room"
+                      date:
+                        type: string
+                        format: date-time
+                        description: "Movie's date time"
+                  description: "Movie's plannings"
+        responses:
+          201:
+            description: 'Successful add, movie plannings added'
+            schema:
+                $ref: '#/definitions/PlanningDTO'
+          400:
+            description: Some fields are null or empty
+          401:
+            description: Admin not logged in
+          403:
+            description: Not authorized to do this action
 
 definitions:
+  PlanningDTO:
+    type: object
+    required:
+      - room
+      - date
+    
+    properties:
+        planningId:
+          type: number
+          description: "Movie's planning"
+        room:
+          type: object
+          $ref: "#/definitions/CinemaRoomDTO"
+          description: "Movie's room"
+        date:
+          type: string
+          format: date-time
+          description: "Movie's date time"
+  
   MovieDTO:
     type: object
     required:
@@ -321,6 +389,7 @@ definitions:
       - imageUrl
       - title
       - desc
+      - planning
       
     properties:
         movieId:
@@ -335,6 +404,11 @@ definitions:
         desc:
           type: string
           description: "Movie desc"
+        planning:
+          type: array
+          items:
+             $ref: "#/definitions/PlanningDTO"
+          description: "Movie's plannings"
 
   LogInAdminDTO:
     type: object

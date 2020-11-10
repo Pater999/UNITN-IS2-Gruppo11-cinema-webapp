@@ -404,6 +404,20 @@ paths:
             description: Admin not logged in
           403:
             description: Not authorized to do this action
+            
+    delete:
+      summary: "Delete a movie from the planning"
+      responses:
+        200:
+          description: Successful response, movie deleted
+        400:
+          description: movieId is NaN or empty
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
+        404:
+          description: Movie not found
 
 definitions:
   PlanningDTO:

@@ -29,17 +29,17 @@ export class FakeDatabase
     [
         new MovieDTO(
              1, 
+            "https://pad.mymovies.it/filmclub/2011/03/059/locandina.jpg",
             "IL Dittatore", 
             "Per anni lo Stato immaginario africano di Wadiya (che nelle mappe corrisponde all'Eritrea) è stato sotto la dittatura dell'ammiraglio generale Hafez Aladeen, un despota infantile, violento, anti-occidentale e antisemita, circondato da guardie del corpo femminili.", 
-            "https://pad.mymovies.it/filmclub/2011/03/059/locandina.jpg",
             [new PlanningDTO(new Date(Date.now()), FakeDatabase.Rooms[0]), new PlanningDTO(new Date(Date.now()), FakeDatabase.Rooms[1])]
             ),
         
             new MovieDTO(
             2, 
+            "https://images-na.ssl-images-amazon.com/images/I/71NPE6hH2DL._SL1288_.jpg",
             "Grimsby",
             "A causa di un nuovo e delicato incarico Sebastian Graves, agente segreto dei Black Ops britannici, si ritrova a collaborare con il fratello Nobby Butcher, con cui non aveva più rapporti da circa 30 anni.",
-            "https://images-na.ssl-images-amazon.com/images/I/71NPE6hH2DL._SL1288_.jpg",
             [new PlanningDTO(new Date(Date.now()), FakeDatabase.Rooms[0]), new PlanningDTO(new Date(Date.now()), FakeDatabase.Rooms[1])]
             )
     ];

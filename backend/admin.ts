@@ -187,7 +187,7 @@ router.post("/movies/:movieId/plannings", (req: any, res: express.Response) => {
     }
 });
 
-router.delete("/movies/:movieId/plannings", (req: any, res: express.Response) => {
+router.delete("/movies/:movieId", (req: any, res: express.Response) => {
     let id = Number(req.params.movieId);
     if(isNaN(id))
         res.status(400).json({ error: "Bad request" });

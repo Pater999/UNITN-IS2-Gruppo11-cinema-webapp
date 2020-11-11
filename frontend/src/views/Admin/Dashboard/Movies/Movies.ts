@@ -53,7 +53,7 @@ export default class AdminMovies extends Vue {
   async deleteMovie(movie: MovieDTO) {
     this.isLoading = true;
     try {
-      await axiosInstance.delete(`/admin/Movies/${movie.Id}/plannings`);
+      await axiosInstance.delete(`/admin/Movies/${movie.Id}`);
       this.$message.success("Film eliminato con successo!");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error)
@@ -206,31 +206,7 @@ export default class AdminMovies extends Vue {
         }
       }
       else
-      {
         this.$message.error("Deve esserci almeno una programmazione!");
-      }
     }
-
-
-
-    // const $form = this.$refs.RoomForm as Form;
-
-    // $form.validate(async (isValid) => {
-    //   if (isValid) {
-    //     this.isLoading = true;
-    //     try {
-    //       //await axiosInstance.post("/admin/movies", this.formModelMovie);
-    //       //this.$message.success("Fi aggiunta con successo!");
-    //     } catch (error) {
-    //       if (error.response.data && error.response.data.error)
-    //         this.$message.error(error.response.data.error);
-    //     } finally {
-    //       $form.resetFields();
-
-    //       this.isLoading = false;
-    //       this.dialogVisible = false;
-    //     }
-    //   }
-    // });
   }
 }

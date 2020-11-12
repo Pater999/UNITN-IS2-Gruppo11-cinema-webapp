@@ -1,7 +1,7 @@
-import axiosInstance from "@/axios-instance";
-import { RoomDTO } from "@/Models/RoomDTO";
-import { Form } from "element-ui";
-import { Component, Vue } from "vue-property-decorator";
+import axiosInstance from '@/axios-instance';
+import { RoomDTO } from '@/Models/RoomDTO';
+import { Form } from 'element-ui';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class AdminRooms extends Vue {
@@ -13,19 +13,18 @@ export default class AdminRooms extends Vue {
 
   Rooms: RoomDTO[] = [];
 
-  formLabelWidth = "100px";
+  formLabelWidth = '100px';
 
   formModelRoom = {
-    name: "",
+    name: '',
     id: 0
   };
 
-
-  showTitle(){
+  showTitle() {
     if (this.isUpdate) {
-      return "Modifica Sala";
+      return 'Modifica Sala';
     } else {
-      return "Aggiungi Sala";
+      return 'Aggiungi Sala';
     }
   }
 
@@ -40,8 +39,7 @@ export default class AdminRooms extends Vue {
       this.$message.success(response.data.message);
       await this.getRooms();
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error)
-        this.$message.error(error.response.data.error);
+      if (error.response && error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
     } finally {
       this.isLoading = false;
     }
@@ -57,11 +55,10 @@ export default class AdminRooms extends Vue {
   async getRooms() {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.get("/rooms");
+      const response = await axiosInstance.get('/rooms');
       this.Rooms = response.data as RoomDTO[];
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error)
-        this.$message.error(error.response.data.error);
+      if (error.response && error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
     } finally {
       this.isLoading = false;
     }
@@ -75,11 +72,11 @@ export default class AdminRooms extends Vue {
   get formRules() {
     const required = {
       required: true,
-      message: "Campo obbligatorio",
+      message: 'Campo obbligatorio'
     };
 
     return {
-      name: required,
+      name: required
     };
   }
 
@@ -90,12 +87,11 @@ export default class AdminRooms extends Vue {
       if (isValid) {
         this.isLoading = true;
         try {
-          await axiosInstance.post("/rooms", this.formModelRoom);
-          this.$message.success("Sala aggiunta con successo!");
+          await axiosInstance.post('/rooms', this.formModelRoom);
+          this.$message.success('Sala aggiunta con successo!');
           await this.getRooms();
         } catch (error) {
-          if (error.response.data && error.response.data.error)
-            this.$message.error(error.response.data.error);
+          if (error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
         } finally {
           $form.resetFields();
 
@@ -113,12 +109,11 @@ export default class AdminRooms extends Vue {
       if (isValid) {
         this.isLoading = true;
         try {
-          await axiosInstance.put(`/rooms/${this.formModelRoom.id}`, {name: this.formModelRoom.name});
-          this.$message.success("Sala modificata con successo!");
+          await axiosInstance.put(`/rooms/${this.formModelRoom.id}`, { name: this.formModelRoom.name });
+          this.$message.success('Sala modificata con successo!');
           await this.getRooms();
         } catch (error) {
-          if (error.response.data && error.response.data.error)
-            this.$message.error(error.response.data.error);
+          if (error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
         } finally {
           $form.resetFields();
 
@@ -130,7 +125,6 @@ export default class AdminRooms extends Vue {
   }
 
   async roomMap(row: RoomDTO) {
-    //TODO
-    console.log(row);
+    this.$router.push(`/admin/dashboard/room/${row.Id}`);
   }
 }

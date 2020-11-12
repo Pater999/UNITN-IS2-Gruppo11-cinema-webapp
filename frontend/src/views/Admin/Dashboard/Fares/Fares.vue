@@ -11,7 +11,7 @@
       >
     </div>
     <template>
-      <el-table :data="Fares" style="width: 100%">
+      <el-table :data="Fares" style="width: 100%" class="mt-3">
         <el-table-column label="Nome">
           <template slot-scope="scope">
             {{ scope.row.Name }}
@@ -27,7 +27,7 @@
             {{ showPrice(scope.row.Price) }}€
           </template>
         </el-table-column>
-        <el-table-column label="">
+        <el-table-column width="120px">
           <template slot-scope="scope">
             <el-button size="mini" type="danger" @click="deleteFare(scope.row)"
               >Elimina</el-button

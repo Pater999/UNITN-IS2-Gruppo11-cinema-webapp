@@ -11,7 +11,7 @@
       >
     </div>
     <template>
-      <el-table :data="Rooms" style="width: 100%">
+      <el-table :data="Rooms" style="width: 100%" class="mt-3">
         <el-table-column label="Nome">
           <template slot-scope="scope">
             {{ scope.row.Name }}
@@ -23,7 +23,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="">
+        <el-table-column width="300px">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="roomMap(scope.row)"
               >Mappa posti</el-button

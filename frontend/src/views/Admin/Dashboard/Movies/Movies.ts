@@ -1,5 +1,4 @@
 import axiosInstance from "@/axios-instance";
-//import Movie from '@/Models/Movie';
 import Planning from '@/Models/Planning';
 import { RoomDTO } from "@/Models/RoomDTO";
 import MovieDTO from "@/Models/MovieDTO";
@@ -82,7 +81,6 @@ export default class AdminMovies extends Vue {
     try 
     {
       const response = await axiosInstance.get("/movies");
-      console.log(response.data);
       this.movies = (response.data as MovieDTO[]);
     } 
     catch (error) 
@@ -187,10 +185,8 @@ export default class AdminMovies extends Vue {
         this.isLoading = true;
         try 
         {
-          let response = await axiosInstance.post("/movies", { title: this.formModelMovie.title, imageUrl:this.formModelMovie.imageUrl, desc: this.formModelMovie.desc } );//new Movie(this.formModelMovie.imageUrl, this.formModelMovie.title, this.formModelMovie.desc));
-
-          response = await axiosInstance.post(`/movies/${(response.data as MovieDTO).Id}/plannings`, { planning: this.formModelMovie.dateTimesList });
-          console.log(response);
+          const response = await axiosInstance.post("/movies", { title: this.formModelMovie.title, imageUrl:this.formModelMovie.imageUrl, desc: this.formModelMovie.desc } );
+          await axiosInstance.post(`/movies/${(response.data as MovieDTO).Id}/plannings`, { planning: this.formModelMovie.dateTimesList });
           this.$message.success("Programmazione Film aggiunta con successo!");
           await this.getMovies();
         } 

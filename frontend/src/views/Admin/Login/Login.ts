@@ -36,7 +36,6 @@ export default class Login extends Vue {
 
           const response = await axiosInstance.post('/login', request);
           console.log(response);
-
           this.$router.replace('/admin/dashboard');
         } catch (error) {
           if (error.response.data && error.response.data.error) this.$message.error(error.response.data.error);

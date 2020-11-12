@@ -1,13 +1,21 @@
-export class RoomDTO
-{
-    Id: number;
-    Name: string;
-    Seats: number;
+import { RoomRowDTO } from './RoomRowDTO';
 
-    constructor(id: number, name: string, seats: number)
-    {
-        this.Name = name;
-        this.Seats = seats;
-        this.Id = id;
-    }
+export interface RoomDTO {
+  Id: number;
+  Name: string;
+  Seats: number | null;
+}
+
+export class Room implements RoomDTO {
+  Id: number;
+  Name: string;
+  Seats: number | null;
+  Rows: RoomRowDTO[];
+
+  constructor(id: number, name: string, rows: RoomRowDTO[]) {
+    this.Name = name;
+    this.Seats = null;
+    this.Id = id;
+    this.Rows = rows;
+  }
 }

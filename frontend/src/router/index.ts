@@ -4,6 +4,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 const AdminLoginPage = () => import(/* webpackChunkName: "admin-login-page" */ '../views/Admin/Login/Login.vue');
 const AdminDashboardPage = () => import(/* webpackChunkName: "admin-dashboard-page" */ '../views/Admin/Dashboard/Dashboard.vue');
 const AdminRoomPage = () => import(/* webpackChunkName: "admin-room-page" */ '../views/Admin/Dashboard/Rooms/RoomsMap/RoomsMap.vue');
+const ErrorPage = () => import(/* webpackChunkName: "404-page" */ '../views/404/404.vue');
 
 const appTitle = 'SmartCinema';
 
@@ -45,7 +46,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/404',
     name: '404-page',
-    component: AdminDashboardPage,        // Da sostituire con una pagina 404
+    component: ErrorPage,        // Da sostituire con una pagina 404
     meta: {
       title: `${appTitle} - Page 404`
     }

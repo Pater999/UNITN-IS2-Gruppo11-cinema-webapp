@@ -1,5 +1,13 @@
 ## UNITN-IS2-Gruppo11-cinema-webapp
 
+### Installare le dipendenze
+
+* Nella route del progetto fare
+    > `npm install`
+
+* Spostarsi nella cartella `frontend` e fare
+    > `npm install`
+
 #### Comandi utili per backend
 
 Dalla root del progetto

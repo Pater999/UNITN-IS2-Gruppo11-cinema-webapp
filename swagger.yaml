@@ -15,7 +15,7 @@ consumes:
 produces:
 - application/json
 paths:
-  /admin/login:
+  /login:
     x-summary: Login
     post:
       summary: Send login data
@@ -89,7 +89,7 @@ paths:
         409:
           description: Username already taken
     
-  /admin/fares:
+  /fares:
     get:
       summary: "List all the tickets' fares"
       responses:
@@ -140,7 +140,7 @@ paths:
         403:
           description: Not authorized to do this action
           
-  /admin/fares/{fareId}:
+  /fares/{fareId}:
     parameters:
     - name: "fareId"
       in: "path"
@@ -164,7 +164,7 @@ paths:
         409:
           description: "Conflict: cannot delete a Fare if it is the only one left"
   
-  /admin/rooms:
+  /rooms:
     get:
       summary: "List all cinema's rooms"
       responses:
@@ -207,7 +207,7 @@ paths:
         403:
           description: Not authorized to do this action
           
-  /admin/rooms/{roomId}:
+  /rooms/{roomId}:
     parameters:
     - name: "roomId"
       in: "path"
@@ -257,7 +257,7 @@ paths:
         409:
           description: "Conflict: cannot delete a room with active reservations or actions"
   
-  /admin/rooms/{roomId}/rows:
+  /rooms/{roomId}/rows:
     parameters:
     - name: "roomId"
       in: "path"
@@ -305,7 +305,7 @@ paths:
         403:
           description: Not authorized to do this action
   
-  /admin/movies:
+  /movies:
     get:
         summary: "List all the movies"
         responses:
@@ -356,7 +356,7 @@ paths:
           403:
             description: Not authorized to do this action
   
-  /admin/movies/:{movieId}:
+  /movies/:{movieId}:
     parameters:
     - name: "movieId"
       in: "path"
@@ -379,7 +379,7 @@ paths:
         404:
           description: Movie not found
   
-  /admin/movies/:{movieId}/plannings:
+  /movies/:{movieId}/plannings:
     parameters:
     - name: "movieId"
       in: "path"

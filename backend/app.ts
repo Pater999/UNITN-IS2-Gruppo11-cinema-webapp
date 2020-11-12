@@ -1,8 +1,10 @@
 import express from 'express';
 
-import { films } from './films';
-import { admin } from './admin';
-// ...
+import { login } from './login';
+import { fares } from './fares';
+import { rooms } from './rooms';
+import { movies } from './movies';
+import { users } from './users';
 
 const app = express();
 
@@ -10,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS BYPASS
-app.use((req: any, res: express.Response, next: express.NextFunction) => {
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
@@ -27,8 +29,11 @@ app.use((req: any, res: express.Response, next: express.NextFunction) => {
   next();
 });
 
-app.use('/api/v1/films', films);
-app.use('/api/v1/admin', admin);
+app.use('/api/v1/login', login);
+app.use('/api/v1/fares', fares);
+app.use('/api/v1/rooms', rooms);
+app.use('/api/v1/movies', movies);
+app.use('/api/v1/users', users);
 
 /* Default 404 handler */
 app.use((req: express.Request, res: express.Response) => {

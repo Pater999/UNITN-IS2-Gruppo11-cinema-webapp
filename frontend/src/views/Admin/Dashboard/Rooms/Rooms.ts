@@ -36,7 +36,7 @@ export default class AdminRooms extends Vue {
   async deleteRoom(row: RoomDTO) {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.delete(`/admin/rooms/${row.Id}`);
+      const response = await axiosInstance.delete(`/rooms/${row.Id}`);
       this.$message.success(response.data.message);
       await this.getRooms();
     } catch (error) {
@@ -57,7 +57,7 @@ export default class AdminRooms extends Vue {
   async getRooms() {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.get("/admin/rooms");
+      const response = await axiosInstance.get("/rooms");
       this.Rooms = response.data as RoomDTO[];
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error)
@@ -90,7 +90,7 @@ export default class AdminRooms extends Vue {
       if (isValid) {
         this.isLoading = true;
         try {
-          await axiosInstance.post("/admin/rooms", this.formModelRoom);
+          await axiosInstance.post("/rooms", this.formModelRoom);
           this.$message.success("Sala aggiunta con successo!");
           await this.getRooms();
         } catch (error) {
@@ -113,7 +113,7 @@ export default class AdminRooms extends Vue {
       if (isValid) {
         this.isLoading = true;
         try {
-          await axiosInstance.put(`/admin/rooms/${this.formModelRoom.id}`, {name: this.formModelRoom.name});
+          await axiosInstance.put(`/rooms/${this.formModelRoom.id}`, {name: this.formModelRoom.name});
           this.$message.success("Sala modificata con successo!");
           await this.getRooms();
         } catch (error) {

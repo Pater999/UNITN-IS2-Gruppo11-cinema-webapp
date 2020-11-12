@@ -34,7 +34,7 @@ export default class Login extends Vue {
             password: this.formModel.password
           };
 
-          const response = await axiosInstance.post('/admin/login', request);
+          const response = await axiosInstance.post('/login', request);
           console.log(response);
 
           this.$router.replace('/admin/dashboard');

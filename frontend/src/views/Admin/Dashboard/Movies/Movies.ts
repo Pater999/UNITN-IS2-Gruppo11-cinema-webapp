@@ -53,7 +53,7 @@ export default class AdminMovies extends Vue {
   async deleteMovie(movie: MovieDTO) {
     this.isLoading = true;
     try {
-      await axiosInstance.delete(`/admin/Movies/${movie.Id}`);
+      await axiosInstance.delete(`/Movies/${movie.Id}`);
       this.$message.success("Film eliminato con successo!");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error)
@@ -66,7 +66,7 @@ export default class AdminMovies extends Vue {
   async getRooms() {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.get("/admin/rooms");
+      const response = await axiosInstance.get("/rooms");
       this.formModelMovie.rooms = response.data as RoomDTO[];
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error)
@@ -81,7 +81,7 @@ export default class AdminMovies extends Vue {
     this.isLoading = true;
     try 
     {
-      const response = await axiosInstance.get("/admin/movies");
+      const response = await axiosInstance.get("/movies");
       console.log(response.data);
       this.movies = (response.data as MovieDTO[]);
     } 
@@ -187,9 +187,9 @@ export default class AdminMovies extends Vue {
         this.isLoading = true;
         try 
         {
-          let response = await axiosInstance.post("/admin/movies", { title: this.formModelMovie.title, imageUrl:this.formModelMovie.imageUrl, desc: this.formModelMovie.desc } );//new Movie(this.formModelMovie.imageUrl, this.formModelMovie.title, this.formModelMovie.desc));
-          
-          response = await axiosInstance.post(`/admin/movies/${(response.data as MovieDTO).Id}/plannings`, { planning: this.formModelMovie.dateTimesList });
+          let response = await axiosInstance.post("/movies", { title: this.formModelMovie.title, imageUrl:this.formModelMovie.imageUrl, desc: this.formModelMovie.desc } );//new Movie(this.formModelMovie.imageUrl, this.formModelMovie.title, this.formModelMovie.desc));
+
+          response = await axiosInstance.post(`/movies/${(response.data as MovieDTO).Id}/plannings`, { planning: this.formModelMovie.dateTimesList });
           console.log(response);
           this.$message.success("Programmazione Film aggiunta con successo!");
           await this.getMovies();

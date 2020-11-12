@@ -31,7 +31,7 @@ export default class AdminFares extends Vue {
   async deleteFare(row: FareDto) {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.delete(`/admin/Fares/${row.Id}`);
+      const response = await axiosInstance.delete(`/Fares/${row.Id}`);
       this.$message.success(response.data.message);
       await this.getFares();
     } catch (error) {
@@ -45,7 +45,7 @@ export default class AdminFares extends Vue {
   async getFares() {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.get("/admin/Fares");
+      const response = await axiosInstance.get("/Fares");
       this.Fares = response.data as FareDto[];
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error)
@@ -83,7 +83,7 @@ export default class AdminFares extends Vue {
       if (isValid) {
         this.isLoading = true;
         try {
-          await axiosInstance.post("/admin/fares", this.formModelFare);
+          await axiosInstance.post("/fares", this.formModelFare);
           this.$message.success("Tariffa aggiunta con successo!");
           await this.getFares();
         } catch (error) {

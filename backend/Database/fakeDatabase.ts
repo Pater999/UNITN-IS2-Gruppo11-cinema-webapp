@@ -15,6 +15,10 @@ export class FakeDatabase {
         password: 'gigi'
     };
 
+    static Users: any = [
+        
+    ];
+
     static Fares =
         [
             new FareDto(1, "bambini", 8.50, "fino a 15"),

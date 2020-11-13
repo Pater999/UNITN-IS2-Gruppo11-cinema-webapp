@@ -5,6 +5,8 @@ const AdminLoginPage = () => import(/* webpackChunkName: "admin-login-page" */ '
 const AdminDashboardPage = () => import(/* webpackChunkName: "admin-dashboard-page" */ '../views/Admin/Dashboard/Dashboard.vue');
 const AdminRoomPage = () => import(/* webpackChunkName: "admin-room-page" */ '../views/Admin/Dashboard/Rooms/RoomsMap/RoomsMap.vue');
 const ErrorPage = () => import(/* webpackChunkName: "404-page" */ '../views/404/404.vue');
+const UsersLoginPage = () => import(/* webpackChunkName: "users-login-page" */ '../views/Users/Login/UserLogin.vue');
+const UsersHomePage = () => import(/* webpackChunkName: "users-home-page" */ '../views/Users/Homepage/HomepageMovies.vue');
 
 const appTitle = 'SmartCinema';
 
@@ -41,6 +43,22 @@ const routes: Array<RouteConfig> = [
     component: AdminRoomPage,
     meta: {
       title: `${appTitle} - Admin room`
+    }
+  },
+  {
+    path: '/users/login',
+    name: 'users-login-page',
+    component: UsersLoginPage,
+    meta: {
+      title: `${appTitle} - Users login`
+    }
+  },
+  {
+    path: '/users/homepage',
+    name: 'users-homepage-page',
+    component: UsersHomePage,
+    meta: {
+      title: `${appTitle} - Users homepage`
     }
   },
   {

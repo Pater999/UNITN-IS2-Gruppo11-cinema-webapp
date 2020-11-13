@@ -1,6 +1,6 @@
 import express from 'express';
 import { FakeDatabase } from './Database/fakeDatabase';
-
+import { validateTokenAdmin } from './Utilities/authentication';
 
 const router = express.Router();
 
@@ -30,7 +30,7 @@ router.post('/login', (req: any, res: express.Response) =>{
 
 })
 
-router.get("/users", (req: any, res: express.Response) => {
+router.get("/users", validateTokenAdmin, (req: any, res: express.Response) => {
     res.status(200).json(FakeDatabase.User);
 })
 

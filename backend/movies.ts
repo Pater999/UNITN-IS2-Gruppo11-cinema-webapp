@@ -4,6 +4,7 @@ import { MovieDTO } from './models/DTO/MovieDTO';
 import Planning from './models/DTO/Planning';
 import { PlanningDTO } from './models/DTO/PlanningDTO';
 import { isValidURL } from './Utilities/isValidURL';
+import { validateTokenAdmin } from './Utilities/authentication';
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get('', (req: express.Request, res: express.Response) => {
   res.status(200).json(FakeDatabase.Movies);
 });
 
-router.post('', (req: express.Request, res: express.Response) => {
+router.post('', validateTokenAdmin, (req: express.Request, res: express.Response) => {
   let title = req.body.title;
   let desc = req.body.desc;
   let imageUrl = req.body.imageUrl;
@@ -24,7 +25,7 @@ router.post('', (req: express.Request, res: express.Response) => {
   }
 });
 
-router.post('/:movieId/plannings', (req: express.Request, res: express.Response) => {
+router.post('/:movieId/plannings', validateTokenAdmin, (req: express.Request, res: express.Response) => {
   let id = Number(req.params.movieId);
   let plannings = req.body.planning;
 
@@ -42,7 +43,7 @@ router.post('/:movieId/plannings', (req: express.Request, res: express.Response)
   }
 });
 
-router.delete('/:movieId', (req: express.Request, res: express.Response) => {
+router.delete('/:movieId', validateTokenAdmin, (req: express.Request, res: express.Response) => {
   let id = Number(req.params.movieId);
   if (isNaN(id)) res.status(400).json({ error: 'Bad request' });
   else {

@@ -22,10 +22,14 @@ import { faSignOutAlt, faUser, faCouch } from '@fortawesome/free-solid-svg-icons
 
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import store from './store/store';
+
+import { READ_TOKEN, READ_USER } from '@/store/types/actions-types';
 
 Vue.config.productionTip = false;
 
+store.dispatch(READ_TOKEN);
+store.dispatch(READ_USER);
 Vue.use(ElementUI, { locale });
 
 library.add(faUser);

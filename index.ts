@@ -1,7 +1,14 @@
 import { app } from './backend/app';
+import { config } from './config';
+import logger from 'morgan';
 
-const port = 5000;
+const environment = process.env.NODE_ENV!;
+const stage = config[environment];
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+if (environment !== 'production') {
+  app.use(logger('dev'));
+}
+
+app.listen(`${stage.port}`, () => {
+  console.log(`Server listening on port ${stage.port}`);
 });

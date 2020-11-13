@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
+import store from '@/store/store';
 
 const AdminLoginPage = () => import(/* webpackChunkName: "admin-login-page" */ '../views/Admin/Login/Login.vue');
 const AdminDashboardPage = () => import(/* webpackChunkName: "admin-dashboard-page" */ '../views/Admin/Dashboard/Dashboard.vue');
@@ -34,7 +35,9 @@ const routes: Array<RouteConfig> = [
     name: 'admin-dashboard-page',
     component: AdminDashboardPage,
     meta: {
-      title: `${appTitle} - Admin dashboard`
+      title: `${appTitle} - Admin dashboard`,
+      auth: true,
+      roles: ['admin']
     }
   },
   {
@@ -42,7 +45,9 @@ const routes: Array<RouteConfig> = [
     name: 'admin-room-page',
     component: AdminRoomPage,
     meta: {
-      title: `${appTitle} - Admin room`
+      title: `${appTitle} - Admin room`,
+      auth: true,
+      roles: ['admin']
     }
   },
   {
@@ -64,7 +69,7 @@ const routes: Array<RouteConfig> = [
   {
     path: '/404',
     name: '404-page',
-    component: ErrorPage,        // Da sostituire con una pagina 404
+    component: ErrorPage,
     meta: {
       title: `${appTitle} - Page 404`
     }
@@ -81,8 +86,31 @@ const router = new VueRouter({
   routes
 });
 
+// CAMBIO TITOLO
 router.afterEach(async (to) => {
   document.title = to.meta.title;
+});
+
+// CONTROLLO SE SONO LOGGATO PRIMA DI VISITARE PAGINE RISERVATE
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some((record) => record.meta.auth);
+  const allowedRoles = to.meta.roles as string[];
+  const { isAuthenticated } = store.getters;
+
+  if (requiresAuth && !isAuthenticated) {
+    const token = store.state.token;
+
+    if (token) {
+      next();
+    } else {
+      if (allowedRoles.includes('admin')) next('/admin/login');
+      else next('/users/login');
+    }
+  } else if (requiresAuth && isAuthenticated && !allowedRoles.includes(store.state?.role)) {
+    next(false);
+  } else {
+    next();
+  }
 });
 
 export default router;

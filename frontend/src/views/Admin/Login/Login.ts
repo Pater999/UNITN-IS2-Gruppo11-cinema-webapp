@@ -1,6 +1,7 @@
 import { Form } from 'element-ui';
 import { Component, Vue } from 'vue-property-decorator';
 import axiosInstance from '@/axios-instance';
+import { LOGIN, SET_USER } from '@/store/types/actions-types';
 
 @Component
 export default class Login extends Vue {
@@ -35,7 +36,11 @@ export default class Login extends Vue {
           };
 
           const response = await axiosInstance.post('/login', request);
-          console.log(response);
+          await this.$store.dispatch(LOGIN, {
+            token: response.data.token,
+            authState: true
+          });
+          await this.$store.dispatch(SET_USER, { username: response.data.username, role: 'admin'});
           this.$router.replace('/admin/dashboard');
         } catch (error) {
           if (error.response.data && error.response.data.error) this.$message.error(error.response.data.error);

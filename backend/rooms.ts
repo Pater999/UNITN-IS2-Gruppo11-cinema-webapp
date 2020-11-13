@@ -3,6 +3,7 @@ import { FakeDatabase } from './Database/fakeDatabase';
 import { RoomDTO } from './models/DTO/RoomDTO';
 import { Room } from './models/DTO/RoomDTO';
 import { RoomRowDTO } from './models/DTO/RoomRowDTO';
+import { validateTokenAdmin } from './Utilities/authentication';
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.get('', (req: express.Request, res: express.Response) => {
   );
 });
 
-router.post('', (req: express.Request, res: express.Response) => {
+router.post('', validateTokenAdmin, (req: express.Request, res: express.Response) => {
   let name = req.body.name;
 
   if (!name) res.status(400).json({ error: 'Bad request' });
@@ -25,7 +26,7 @@ router.post('', (req: express.Request, res: express.Response) => {
   }
 });
 
-router.delete('/:roomId', (req: express.Request, res: express.Response) => {
+router.delete('/:roomId', validateTokenAdmin, (req: express.Request, res: express.Response) => {
   let id = Number(req.params.roomId);
   if (isNaN(id)) res.status(400).json({ error: 'Bad request' });
   else {
@@ -38,7 +39,7 @@ router.delete('/:roomId', (req: express.Request, res: express.Response) => {
   }
 });
 
-router.put('/:roomId', (req: express.Request, res: express.Response) => {
+router.put('/:roomId', validateTokenAdmin, (req: express.Request, res: express.Response) => {
   let id = Number(req.params.roomId);
   if (isNaN(id)) res.status(400).json({ error: 'Bad request' });
   else {
@@ -67,7 +68,7 @@ router.get('/:roomId/rows', (req: express.Request, res: express.Response) => {
   }
 });
 
-router.post('/:roomId/rows', (req: express.Request, res: express.Response) => {
+router.post('/:roomId/rows', validateTokenAdmin, (req: express.Request, res: express.Response) => {
   const id = Number(req.params.roomId);
   const seatsNumber = req.body.seatsNumber;
 

@@ -6,7 +6,7 @@
     <CHeaderNav class="ml-auto mr-4">
       <CDropdown inNav class="c-header-nav-items mx-2" placement="bottom-end" add-menu-classes="pt-0" :offset="[0, 10]">
         <template #toggler>
-          <CHeaderNavLink> <font-awesome-icon icon="user" class="mr-3" /> Admin </CHeaderNavLink>
+          <CHeaderNavLink> <font-awesome-icon icon="user" class="mr-3" /> {{ username }} </CHeaderNavLink>
         </template>
         <CDropdownHeader tag="div" class="text-center mb-2" color="light">
           <strong>Profilo</strong>

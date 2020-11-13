@@ -2,17 +2,6 @@
   <CWrapper>
     <Header />
     <div>
-      <el-menu
-        :default-active="activeIndex2"
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#b96d22"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-      >
-        <el-menu-item index="1">SmartCinema</el-menu-item>
-      </el-menu>
 
       <div v-loading="isLoading">
         <el-row>
@@ -37,17 +26,13 @@
             <el-date-picker
               class="mt-4"
               lang="it"
-              v-model="formModelMovie.dateTimeSelected" 
+              v-model="dateTimeSelected" 
               type="date"
+              @change="dateChanged()"
             ></el-date-picker>
           </div>
         </el-row>
         <div v-for="movie in movies" :key="movie.Id">
-          <div
-            v-for="plan in movie.Plans"
-            :key="`${plan.Date}-${plan.Room.Id}`"
-          >
-            <div v-if="new Date(plan.Date) >= formModelMovie.dateTimeSelected">
               <el-card style="width: 98%">
                 <template>
                   <div style="width: 100%" class="content">
@@ -59,15 +44,15 @@
                     <el-col :span="0.5" style="margin-left: 50px"> </el-col>
                     <el-col class="testo">
                       <el-row
-                        ><SPAN class="testo" STYLE="font-size:18.0pt">{{
+                        ><span class="testo" style="font-size:18.0pt">{{
                           movie.Title
-                        }}</SPAN></el-row
+                        }}</span></el-row
                       >
                       <div class="line"></div>
                       <el-row>
-                        <SPAN class="testo" STYLE="font-size:12.0pt">{{
+                        <span class="testo" style="font-size:12.0pt">{{
                           movie.Desc
-                        }}</SPAN>
+                        }}</span>
                       </el-row>
                     </el-col>
 
@@ -79,9 +64,9 @@
                           v-for="plan in movie.Plans"
                           :key="`${plan.Date}-${plan.Room.Id}`"
                         >
-                          {{ printDate(new Date(plan.Date).getHours()) }}-{{
-                            printDate(new Date(plan.Date).getMinutes())
-                          }}</el-button
+                          {{ new Date(plan.Date).getHours() }}:{{
+                            new Date(plan.Date).getMinutes()
+                          }}<div>{{ plan.Room.Name }}</div></el-button
                         >
                       </el-row>
                       <el-row>
@@ -91,17 +76,13 @@
                           >PRENOTA ORA</el-button
                         >
 
-                        <el-tag STYLE="font-size:13.0pt; margin-right: 50px; float: right; margin-top: 125px" type="primary">{{ printDate(new Date(plan.Date).getDay()) }}/{{
-                            printDate(new Date(plan.Date).getMonth())
-                          }}/{{ new Date().getFullYear() }}</el-tag>
+                        
                         
                       </el-row>
                     </el-col>
                   </div>
                 </template>
               </el-card>
-            </div>
-          </div>
         </div>
       </div>
     </div>

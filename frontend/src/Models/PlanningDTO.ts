@@ -1,6 +1,6 @@
 import { RoomDTO } from './RoomDTO';
 
-export default class Planning
+export default class PlanningDTO
 {
     Date: Date;
     Room: RoomDTO;

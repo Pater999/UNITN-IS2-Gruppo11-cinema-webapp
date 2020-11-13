@@ -9,7 +9,15 @@ import { validateTokenAdmin } from './Utilities/authentication';
 const router = express.Router();
 
 router.get('', (req: express.Request, res: express.Response) => {
-  res.status(200).json(FakeDatabase.Movies);
+  const date = req.query.date;
+
+  if (date) {
+    const filtroData = new Date(date as string);
+    const moviesFiltered = FakeDatabase.Movies.filter(item => item.Plans.find((data: PlanningDTO) => new Date(data.Date).setHours(0, 0, 0, 0) === filtroData.setHours(0, 0, 0, 0)));
+    res.status(200).json(moviesFiltered.map(({ Id, Title, Desc, ImageUrl, Plans }) => { return { Id, Title, Desc, ImageUrl, Plans: Plans.filter(plan => new Date(plan.Date).setHours(0, 0, 0, 0) === filtroData.setHours(0, 0, 0, 0)) } }));
+  }
+  else
+    res.status(200).json(FakeDatabase.Movies);
 });
 
 router.post('', validateTokenAdmin, (req: express.Request, res: express.Response) => {

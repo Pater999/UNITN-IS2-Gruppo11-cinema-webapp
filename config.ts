@@ -1,6 +1,7 @@
 const config: any = {
   development: {
-    port: process.env.PORT || 5000
+    port: process.env.PORT || 5000,
+    saltingRounds: 10
   }
 };
 

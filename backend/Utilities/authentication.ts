@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-import express from 'express';
 
-dotenv.config();
+import express from 'express';
 
 // Costanti
 const expireTime = '20d';

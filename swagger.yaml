@@ -10,6 +10,11 @@ host: polls.apiblueprint.org
 basePath: /api/v1
 schemes:
 - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
 consumes:
 - application/json
 produces:
@@ -20,7 +25,7 @@ paths:
     post:
       summary: Send login data
       parameters:
-        - name: admin
+        - name: user
           in: body
           required: true
           schema:
@@ -31,26 +36,29 @@ paths:
             properties:
               username:
                 type: string
-                description: "Username of the admin"
+                description: "Username"
+                example: "admin"
               password:
                 type: string
-                description: "Password of the admin"
+                description: "User's Password"
+                example: "admin"
       responses:
         200:
           description: Logged in correctly
           schema:
-            $ref: '#/definitions/LogInAdminDTO'
+            $ref: '#/definitions/LogInDTO'
         400:
           description: User or password not specified
         401:
-          description: Admin not logged in correctly
-        
-          
-          
+          description: Wrong password
+        404:
+          description: Username not found
+        500:
+          description: Internal server error
+
   /users:
-    x-summary: Register
     post:
-      summary: Send register data
+      summary: Create new user
       parameters:
         - name: user
           in: body
@@ -80,7 +88,7 @@ paths:
                 type: string
                 description: "Password of the user"
       responses:
-        200:
+        201:
           description: Registered correctly
           schema:
             $ref: '#/definitions/RegisterDTO'
@@ -88,6 +96,8 @@ paths:
           description: Some fields are null or empty
         409:
           description: Username already taken
+        500:
+          description: Internal server error
     
   /fares:
     get:
@@ -99,11 +109,9 @@ paths:
             type: array
             items:
               $ref: "#/definitions/FareDTO"
-        401:
-          description: Admin not logged in
-        403:
-          description: Not authorized to do this action
     post:
+      security:
+        - Bearer: []
       summary: "Add a new tickets' fare"
       parameters:
         - in: body
@@ -149,6 +157,8 @@ paths:
       type: "integer"
       format: "int32"
     delete:
+      security:
+        - Bearer: []
       summary: "Delete a fare"
       responses:
         200:
@@ -174,22 +184,18 @@ paths:
             type: array
             items:
               $ref: "#/definitions/CinemaRoomDTO"
-        401:
-          description: Admin not logged in
-        403:
-          description: Not authorized to do this action
     post:
+      security:
+        - Bearer: []
       summary: "Add a new cinema's room"
       parameters:
         - in: body
           name: room
           required: true
-          
           schema:
             type: object
             required:
               - name
-        
             properties:
               name:
                 type: string
@@ -216,6 +222,8 @@ paths:
       type: "integer"
       format: "int32"
     put:
+      security:
+        - Bearer: []
       summary: Update a cinema's room
       parameters:
         - in: body
@@ -242,6 +250,8 @@ paths:
           description: Cinema's room not found
           
     delete:
+      security:
+        - Bearer: []
       summary: "Delete a cinema room"
       responses:
         200:
@@ -274,11 +284,9 @@ paths:
             type: array
             items:
               $ref: "#/definitions/RoomRowDTO"
-        401:
-          description: Admin not logged in
-        403:
-          description: Not authorized to do this action
     post:
+      security:
+        - Bearer: []
       summary: "Add a new row to a room"
       parameters:
         - in: body
@@ -307,19 +315,23 @@ paths:
   
   /movies:
     get:
-        summary: "List all the movies"
-        responses:
-          200:
-            description: "Collection of movies"
-            schema:
-              type: array
-              items:
-                $ref: "#/definitions/MovieDTO"
-          401:
-            description: Admin not logged in
-          403:
-            description: Not authorized to do this action
+      parameters:
+        - in: query
+          name: date
+          type: string
+          format: date
+          description: Filter by date
+      summary: "List all the movies"
+      responses:
+        200:
+          description: "Collection of movies"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/MovieDTO"
     post:
+        security:
+         - Bearer: []
         summary: "Add a new Movie"
         parameters:
           - in: body
@@ -366,6 +378,8 @@ paths:
       format: "int32"
     
     delete:
+      security:
+        - Bearer: []
       summary: "Delete a movie from the planning"
       responses:
         200:
@@ -388,6 +402,8 @@ paths:
       type: "integer"
       format: "int32"
     post:
+        security:
+          - Bearer: []
         summary: "Add plannings for a movie"
         parameters:
           - in: body
@@ -476,19 +492,22 @@ definitions:
              $ref: "#/definitions/PlanningDTO"
           description: "Movie's plannings"
 
-  LogInAdminDTO:
+  LogInDTO:
     type: object
     required:
       - token
       - username
-
+      - role
     properties:
       token:
         type: string
-        description: 'token'
+        description: 'Bearer Token'
       username:
         type: string
-        description: 'Admin username'
+        description: 'Username'
+      role:
+        type: string
+        description: 'User role'
   
   RegisterDTO:
     type: object
@@ -498,6 +517,7 @@ definitions:
       - email
       - name
       - surname
+      - role
 
     properties:
       id:
@@ -515,6 +535,9 @@ definitions:
       surname:
         type: string
         description: 'User surname'
+      role:
+        type: string
+        description: 'User role'
 
   FareDTO:
     type: object

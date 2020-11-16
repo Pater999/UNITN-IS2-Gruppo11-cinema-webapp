@@ -3,12 +3,8 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import Users from './Database/schemas/users';
 import { createToken } from './Utilities/authentication';
-import { config } from '../config';
+import { connUri, dbOptions } from './Database/databaseService';
 
-const connUri = process.env.MONGO_CONN_URL!;
-const dbOptions = { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true };
-const environment = process.env.NODE_ENV!;
-const stage = config[environment];
 
 const router = express.Router();
 

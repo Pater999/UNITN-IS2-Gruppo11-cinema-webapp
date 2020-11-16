@@ -1,40 +1,73 @@
-import express from 'express';
-import { FakeDatabase } from './Database/fakeDatabase';
-import { FareDto } from './models/DTO/FareDto';
-import { validateTokenAdmin } from './Utilities/authentication';
+import express from "express";
+import mongoose from "mongoose";
+import Fares from "./Database/schemas/fares";
+import { validateTokenAdmin } from "./Utilities/authentication";
+import { connUri, dbOptions } from "./Database/databaseService";
 
 const router = express.Router();
 
-router.get('', (req: express.Request, res: express.Response) => {
-  res.status(200).json(FakeDatabase.Fares);
-});
-
-router.post('', validateTokenAdmin, (req: express.Request, res: express.Response) => {
-  let name = req.body.name;
-  let price = Number(req.body.price);
-  let desc = req.body.desc;
-
-  if (!name || isNaN(price) || !desc) res.status(400).json({ error: 'Some Fields are null or empty!' });
-  else {
-    let elem = new FareDto(FakeDatabase.Fares.length + 1, name, price, desc);
-    FakeDatabase.Fares.push(elem);
-    res.status(201).json(elem);
+router.get("", async (req: express.Request, res: express.Response) => {
+  let db = null;
+  try {
+    db = await mongoose.createConnection(connUri, dbOptions);
+    const FareMod = db.model("Fares", Fares);
+    const fares = await FareMod.find().select("-__v").exec();
+    res.status(200).json(fares);
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error." });
+  } finally {
+    db && db.close();
   }
 });
 
-router.delete('/:fareId', validateTokenAdmin, (req: express.Request, res: express.Response) => {
-  let id = Number(req.params.fareId);
-  if (isNaN(id)) res.status(400).json({ error: 'Some Fields are null or empty!' });
+router.post("", validateTokenAdmin, async (req: express.Request, res: express.Response) => {
+  const name = req.body.name;
+  const price = Number(req.body.price);
+  const desc = req.body.desc;
+
+  if (!name || isNaN(price) || !desc) res.status(400).json({ error: "Some Fields are null or empty!" });
   else {
-    if (FakeDatabase.Fares.length > 1) {
-      let index = FakeDatabase.Fares.findIndex((item) => item.Id == id);
-      if (index == -1) res.status(404).json({ error: 'Tariffa non trovata!' });
-      else {
-        FakeDatabase.Fares.splice(index, 1);
-        res.status(200).json({ message: 'Tariffa rimossa con successo!' });
+    const elem = { name, price, desc };
+    let db = null;
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const FareMod = db.model("Fares", Fares);
+      const fare = (await FareMod.create(elem)) as any;
+      res.status(201).json({
+        id: fare._id,
+        name: fare.name,
+        price: fare.price,
+        desc: fare.desc,
+      });
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error." });
+    } finally {
+      db && db.close();
+    }
+  }
+});
+
+router.delete("/:fareId", validateTokenAdmin, async (req: express.Request, res: express.Response) => {
+  const id = req.params.fareId;
+  if (!id) res.status(400).json({ error: "Some Fields are null or empty!" });
+  else {
+    let db = null;
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const FareMod = db.model("Fares", Fares);
+      const count = await FareMod.countDocuments();
+
+      if (count <= 1) {
+        res.status(409).json({ error: "Deve esserci almeno una Tariffa!" });
+      } else {
+        const fare = await FareMod.findByIdAndDelete(id);
+
+        res.status(200).json({ message: "Tariffa rimossa con successo!" });
       }
-    } else {
-      res.status(409).json({ error: 'Deve esserci almeno una Tariffa!' });
+    } catch (err) {
+      res.status(404).json({ error: "Tariffa non trovata!" });
+    } finally {
+      db && db.close();
     }
   }
 });

@@ -5,12 +5,8 @@ import { RegisterDto } from './models/DTO/RegisterDTO';
 import Users from './Database/schemas/users';
 import { FakeDatabase } from './Database/fakeDatabase';
 import { validateTokenAdmin } from './Utilities/authentication';
-import { config } from '../config';
+import { connUri, dbOptions, stage } from './Database/databaseService';
 
-const connUri = process.env.MONGO_CONN_URL!;
-const dbOptions = { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true };
-const environment = process.env.NODE_ENV!;
-const stage = config[environment];
 
 const router = express.Router();
 
@@ -28,7 +24,7 @@ router.post('', async (req: express.Request, res: express.Response) => {
         db = await mongoose.createConnection(connUri, dbOptions);
         const UserMod = db.model('Users', Users);
         const { _id, Username, Role, Name, Surname, Email } = (await UserMod.create(elem)) as any;
-        res.status(200).json({ id: _id, Username, Role, Name, Surname, Email });
+        res.status(201).json({ id: _id, Username, Role, Name, Surname, Email });
       } catch (err) {
         res.status(409).json({ error: 'Questo username è stato già utilizzato!' });
       } finally {

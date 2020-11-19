@@ -14,12 +14,12 @@
       <el-table :data="Rooms" style="width: 100%" class="mt-3">
         <el-table-column label="Nome">
           <template slot-scope="scope">
-            {{ scope.row.Name }}
+            {{ scope.row.name }}
           </template>
         </el-table-column>
         <el-table-column label="Posti">
           <template slot-scope="scope">
-            {{ scope.row.Seats }}
+            {{ scope.row.seatsNumber }}
           </template>
         </el-table-column>
 

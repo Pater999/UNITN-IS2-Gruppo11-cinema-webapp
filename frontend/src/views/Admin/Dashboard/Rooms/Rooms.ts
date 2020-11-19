@@ -35,7 +35,7 @@ export default class AdminRooms extends Vue {
   async deleteRoom(row: RoomDTO) {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.delete(`/rooms/${row.Id}`);
+      const response = await axiosInstance.delete(`/rooms/${row._id}`);
       this.$message.success(response.data.message);
       await this.getRooms();
     } catch (error) {
@@ -46,8 +46,8 @@ export default class AdminRooms extends Vue {
   }
 
   async modifyRoom(row: RoomDTO) {
-    this.formModelRoom.name = row.Name;
-    this.formModelRoom.id = row.Id;
+    this.formModelRoom.name = row.name;
+    this.formModelRoom.id = row._id;
     this.isUpdate = true;
     this.dialogVisible = true;
   }
@@ -125,6 +125,6 @@ export default class AdminRooms extends Vue {
   }
 
   async roomMap(row: RoomDTO) {
-    this.$router.push(`/admin/dashboard/room/${row.Id}`);
+    this.$router.push(`/admin/dashboard/room/${row._id}`);
   }
 }

@@ -99,7 +99,7 @@ export default class AdminMovies extends Vue {
     await this.getRooms();
     this.dialogVisible = true;
     this.isNextStep = false;
-    this.formModelMovie.selectedRoom = this.formModelMovie.rooms[0].Id;
+    this.formModelMovie.selectedRoom = this.formModelMovie.rooms[0]._id;
     this.formModelMovie.dateTimesList = [];
     //this.formModelMovie.imageUrl = "https://images-na.ssl-images-amazon.com/images/I/81oND6XuHsL._SY679_.jpg"
 
@@ -109,7 +109,7 @@ export default class AdminMovies extends Vue {
 
   printMovieDate(movieDate: Planning): string
   {
-    return `${this.formModelMovie.rooms.find(item => item.Id == movieDate.RoomId)?.Name} - ` + this.printDate(movieDate.Date);
+    return `${this.formModelMovie.rooms.find(item => item._id == movieDate.RoomId)?.name} - ` + this.printDate(movieDate.Date);
   }
 
   printDate(date: Date): string

@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const roomsSchema = new Schema({
-  Name: {
+  name: {
     type: "String",
     required: true,
   },
-  Rows: [Number],
+  rows: [Number],
 });
 
 export default roomsSchema;

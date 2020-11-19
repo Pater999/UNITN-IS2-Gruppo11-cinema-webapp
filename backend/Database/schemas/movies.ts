@@ -3,19 +3,19 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const moviesSchema = new Schema({
-  Title: {
+  title: {
     type: "String",
     required: true,
   },
-  Desc: {
+  desc: {
     type: "String",
     required: true,
   },
-  ImageUrl: {
+  imageUrl: {
     type: "String",
     required: true,
   },
-  Plans: [
+  plans: [
     {
       Date: { type: Date },
       RoomId: { type: Number },

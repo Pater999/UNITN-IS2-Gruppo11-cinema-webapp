@@ -1,85 +1,146 @@
 import express from 'express';
-import { FakeDatabase } from './Database/fakeDatabase';
-import { RoomDTO } from './models/DTO/RoomDTO';
-import { Room } from './models/DTO/RoomDTO';
-import { RoomRowDTO } from './models/DTO/RoomRowDTO';
 import { validateTokenAdmin } from './Utilities/authentication';
+import mongoose from 'mongoose';
+import { connUri, dbOptions } from './Database/databaseService';
+import Rooms from "./Database/schemas/rooms";
 
 const router = express.Router();
 
-router.get('', (req: express.Request, res: express.Response) => {
-  res.status(200).json(
-    FakeDatabase.Rooms.map(({ Rows, Id, Name }) => {
-      return { Id: Id, Name: Name, Seats: Rows.reduce((a, { SeatsNumber }) => a + SeatsNumber, 0) };
-    }) as RoomDTO[]
-  );
+router.get('', async (req: express.Request, res: express.Response) => {
+
+  let db = null;
+  try {
+    db = await mongoose.createConnection(connUri, dbOptions);
+    const RoomMod = db.model("Rooms", Rooms);
+    let rooms = await RoomMod.find().select("-__v").exec() as any;
+    rooms = rooms.map(({ _id, name, rows }: { _id: string, name: string, rows: number[]}) => {
+      return {
+        _id,
+        name,
+        seatsNumber: rows.reduce((a, b) => a + b, 0),
+      };
+    })
+    res.status(200).json(rooms);
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error." });
+  } finally {
+    db && db.close();
+  }
 });
 
-router.post('', validateTokenAdmin, (req: express.Request, res: express.Response) => {
+router.post('', validateTokenAdmin, async (req: express.Request, res: express.Response) => {
   let name = req.body.name;
 
   if (!name) res.status(400).json({ error: 'Bad request' });
   else {
-    let elem = new Room(FakeDatabase.Rooms.length + 1, name, []);
-    FakeDatabase.Rooms.push(elem);
-    res.status(201).json(elem);
-  }
-});
-
-router.delete('/:roomId', validateTokenAdmin, (req: express.Request, res: express.Response) => {
-  let id = Number(req.params.roomId);
-  if (isNaN(id)) res.status(400).json({ error: 'Bad request' });
-  else {
-    let index = FakeDatabase.Rooms.findIndex((item) => item.Id == id);
-    if (index == -1) res.status(400).json({ error: 'Room not found' });
-    else {
-      FakeDatabase.Rooms.splice(index, 1);
-      res.status(200).json({ message: 'element removed' });
+    const elem = { name, rows: [] };
+    let db = null;
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const RoomMod = db.model("Rooms", Rooms);
+      const room = (await RoomMod.create(elem)) as any;
+      res.status(201).json({
+        id: room._id,
+        name: room.name,
+        seats: 0,
+      });
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error." });
+    } finally {
+      db && db.close();
     }
   }
 });
 
-router.put('/:roomId', validateTokenAdmin, (req: express.Request, res: express.Response) => {
-  let id = Number(req.params.roomId);
-  if (isNaN(id)) res.status(400).json({ error: 'Bad request' });
+router.delete('/:roomId', validateTokenAdmin, async (req: express.Request, res: express.Response) => {
+  let id = req.params.roomId;
+  if (!id) res.status(400).json({ error: 'Bad request' });
+  else {
+    let db = null;
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const RoomMod = db.model("Rooms", Rooms);
+      //Check film if uses Room
+      const room = await RoomMod.findByIdAndDelete(id);
+      if (!room)
+        throw new Error();
+
+      res.status(200).json({ message: "Sala rimossa con successo!" });
+    } catch (err) {
+      res.status(404).json({ error: "Sala non trovata!" });
+    } finally {
+      db && db.close();
+    }
+  }
+});
+
+router.put('/:roomId', validateTokenAdmin, async (req: express.Request, res: express.Response) => {
+  let id = req.params.roomId;
+  if (!id) res.status(400).json({ error: 'Bad request' });
   else {
     let name = req.body.name;
 
-    if (!name) res.status(400).json({ error: 'Bad request' });
-
-    let index = FakeDatabase.Rooms.findIndex((item) => item.Id == id);
-    if (index == -1) res.status(400).json({ error: 'Room not found' });
+    if (!name)
+      res.status(400).json({ error: 'Bad request' });
     else {
-      const elem = (FakeDatabase.Rooms[index].Name = name);
-      res.status(200).json(elem);
+      let db = null;
+      try {
+        db = await mongoose.createConnection(connUri, dbOptions);
+        const RoomMod = db.model("Rooms", Rooms);
+        const elem = (await RoomMod.findByIdAndUpdate(id, { name }, { new: true, useFindAndModify: false }) as any);
+        if (!elem)
+          throw new Error();
+
+        res.status(200).json({ id: elem._id, name: elem.name });
+      } catch (err) {
+        res.status(404).json({ error: 'Room not found' });
+      } finally {
+        db && db.close();
+      }
     }
   }
 });
 
-router.get('/:roomId/rows', (req: express.Request, res: express.Response) => {
-  const id = Number(req.params.roomId);
-  if (isNaN(id)) res.status(400).json({ error: 'Bad request' });
+router.get('/:roomId/rows', async (req: express.Request, res: express.Response) => {
+  const id = req.params.roomId;
+  if (!id) res.status(400).json({ error: 'Bad request' });
 
-  const index = FakeDatabase.Rooms.findIndex((item) => item.Id == id);
-  if (index == -1) res.status(400).json({ error: 'Room not found' });
-  else {
-    const elem = FakeDatabase.Rooms[index].Rows;
-    res.status(200).json(elem);
+  let db = null;
+  try {
+    db = await mongoose.createConnection(connUri, dbOptions);
+    const RoomsMod = db.model("Rooms", Rooms);
+    const rooms = await RoomsMod.findById(id) as any;
+    res.status(200).json(rooms.rows);
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error." });
+  } finally {
+    db && db.close();
   }
 });
 
-router.post('/:roomId/rows', validateTokenAdmin, (req: express.Request, res: express.Response) => {
-  const id = Number(req.params.roomId);
+router.post('/:roomId/rows', validateTokenAdmin, async (req: express.Request, res: express.Response) => {
+  const id = req.params.roomId;
   const seatsNumber = req.body.seatsNumber;
 
-  if (isNaN(id) && !seatsNumber && isNaN(seatsNumber)) res.status(400).json({ error: 'Bad request' });
+  if (!id && !seatsNumber && isNaN(seatsNumber)) res.status(400).json({ error: 'Bad request' });
   else {
-    const index = FakeDatabase.Rooms.findIndex((item) => item.Id == id);
-    if (index == -1) res.status(400).json({ error: 'Room not found' });
-    else {
-      let elem = new RoomRowDTO(FakeDatabase.Rooms[index].Rows.length + 1, seatsNumber);
-      FakeDatabase.Rooms[index].Rows.push(elem);
-      res.status(201).json(elem);
+
+    let db = null;
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const RoomMod = db.model("Rooms", Rooms);
+      const room = await RoomMod.findByIdAndUpdate(id, { $push: { rows: seatsNumber }, new: true, useFindAndModify: false }) as any;
+      if (!room)
+        throw new Error();
+
+      res.status(201).json({
+        id: room._id,
+        seatsNumber: seatsNumber,
+      });
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error." });
+    } finally {
+      db && db.close();
     }
   }
 });

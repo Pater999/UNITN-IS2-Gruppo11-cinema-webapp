@@ -61,7 +61,9 @@ router.delete("/:fareId", validateTokenAdmin, async (req: express.Request, res: 
         res.status(409).json({ error: "Deve esserci almeno una Tariffa!" });
       } else {
         const fare = await FareMod.findByIdAndDelete(id);
-
+        if (!fare)
+          throw new Error();
+        
         res.status(200).json({ message: "Tariffa rimossa con successo!" });
       }
     } catch (err) {

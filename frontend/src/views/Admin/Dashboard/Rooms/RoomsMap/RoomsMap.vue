@@ -9,8 +9,8 @@
               <h3>Mappa posti</h3>
             </div>
             <div class="mb-3 text-center">
-              <div v-for="(row, indice) in rows" :key="row.Id" class="mt-3">
-                <span v-for="index in row.SeatsNumber" :key="`row-${row.Id}-${index}`" class="mr-2">
+              <div v-for="(row, indice) in rows" :key="`row-${indice}`" class="mt-3">
+                <span v-for="index in row" :key="`row-${index}`" class="mr-2">
                   <el-popover placement="top-start" :title="`Fila ${indice+1}`" width="200" trigger="hover" :content="`Posto ${index}`">
                     <font-awesome-icon slot="reference" icon="couch" style="color: brown" size="lg" />
                   </el-popover>

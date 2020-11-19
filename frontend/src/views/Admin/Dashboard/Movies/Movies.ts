@@ -12,7 +12,7 @@ export interface IformModelMovie {
   dateTimeSelected: Date;
   dateTimesList: Planning[];
   rooms: RoomDTO[];
-  selectedRoom: number;
+  selectedRoom: string;
 }
 
 @Component
@@ -36,7 +36,7 @@ export default class AdminMovies extends Vue {
     dateTimeSelected: new Date(Date.now()),
     dateTimesList: [],
     rooms: [],
-    selectedRoom: 0
+    selectedRoom: ""
   };
 
   async mounted() {
@@ -52,7 +52,7 @@ export default class AdminMovies extends Vue {
   async deleteMovie(movie: MovieDTO) {
     this.isLoading = true;
     try {
-      await axiosInstance.delete(`/Movies/${movie.Id}`);
+      await axiosInstance.delete(`/Movies/${movie._id}`);
       this.$message.success("Film eliminato con successo!");
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error)
@@ -101,7 +101,7 @@ export default class AdminMovies extends Vue {
     this.isNextStep = false;
     this.formModelMovie.selectedRoom = this.formModelMovie.rooms[0]._id;
     this.formModelMovie.dateTimesList = [];
-    //this.formModelMovie.imageUrl = "https://images-na.ssl-images-amazon.com/images/I/81oND6XuHsL._SY679_.jpg"
+    this.formModelMovie.imageUrl = "https://images-na.ssl-images-amazon.com/images/I/81oND6XuHsL._SY679_.jpg"
 
     const date = this.formModelMovie.dateTimeSelected;
     this.formModelMovie.dateTimeSelected.setDate(date.getDate() + 1);
@@ -109,7 +109,7 @@ export default class AdminMovies extends Vue {
 
   printMovieDate(movieDate: Planning): string
   {
-    return `${this.formModelMovie.rooms.find(item => item._id == movieDate.RoomId)?.name} - ` + this.printDate(movieDate.Date);
+    return `${this.formModelMovie.rooms.find(item => item._id == movieDate.roomId)?.name} - ` + this.printDate(movieDate.date);
   }
 
   printDate(date: Date): string
@@ -120,17 +120,17 @@ export default class AdminMovies extends Vue {
   addMovieDate()
   {
     const date = this.formModelMovie.dateTimeSelected;
-    const room = this.formModelMovie.selectedRoom;
+    const roomId = this.formModelMovie.selectedRoom;
 
-    if (date && room)
+    if (date && roomId)
     { 
       if (date >= new Date(Date.now()))
       {     
-        const Movie = new Planning(date, room);
-        if (!this.formModelMovie.dateTimesList.find(item => item.Date == Movie.Date && item.RoomId == Movie.RoomId))
+        const Movie = {date, roomId};
+        if (!this.formModelMovie.dateTimesList.find(item => item.date.toUTCString() == Movie.date.toUTCString() && item.roomId == Movie.roomId))
         {
           this.formModelMovie.dateTimesList.push(Movie);
-          this.formModelMovie.dateTimesList.sort((item1, item2) => item1.Date.getDate() - item2.Date.getDate());
+          this.formModelMovie.dateTimesList.sort((item1, item2) => item1.date.getDate() - item2.date.getDate());
         }
         else
           this.$message.error("Il film è già stato programmato per questa data e per questa sala!");
@@ -144,7 +144,7 @@ export default class AdminMovies extends Vue {
 
   deleteMovieDate(movie: Planning)
   {
-    const index = this.formModelMovie.dateTimesList.findIndex(item => item.Date == movie.Date && item.RoomId == movie.RoomId);
+    const index = this.formModelMovie.dateTimesList.findIndex(item => item.date == movie.date && item.roomId == movie.roomId);
     if (index != -1)
     {
       this.formModelMovie.dateTimesList.splice(index, 1);
@@ -186,7 +186,7 @@ export default class AdminMovies extends Vue {
         try 
         {
           const response = await axiosInstance.post("/movies", { title: this.formModelMovie.title, imageUrl:this.formModelMovie.imageUrl, desc: this.formModelMovie.desc } );
-          await axiosInstance.post(`/movies/${(response.data as MovieDTO).Id}/plannings`, { planning: this.formModelMovie.dateTimesList });
+          await axiosInstance.post(`/movies/${(response.data as MovieDTO)._id}/plannings`, { plannings: this.formModelMovie.dateTimesList });
           this.$message.success("Programmazione Film aggiunta con successo!");
           await this.getMovies();
         } 

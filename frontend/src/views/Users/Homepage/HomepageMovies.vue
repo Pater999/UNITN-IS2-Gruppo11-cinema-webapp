@@ -32,26 +32,26 @@
             ></el-date-picker>
           </div>
         </el-row>
-        <div v-for="movie in movies" :key="movie.Id">
+        <div v-for="movie in movies" :key="movie._id">
               <el-card style="width: 98%">
                 <template>
                   <div style="width: 100%" class="content">
                     <img
                       class="mr-3 roundedFilm"
-                      :src="movie.ImageUrl"
+                      :src="movie.imageUrl"
                       width="12%"
                     />
                     <el-col :span="0.5" style="margin-left: 50px"> </el-col>
                     <el-col class="testo">
                       <el-row
                         ><span class="testo" style="font-size:18.0pt">{{
-                          movie.Title
+                          movie.title
                         }}</span></el-row
                       >
                       <div class="line"></div>
                       <el-row>
                         <span class="testo" style="font-size:12.0pt">{{
-                          movie.Desc
+                          movie.desc
                         }}</span>
                       </el-row>
                     </el-col>
@@ -61,12 +61,12 @@
                         <el-button
                           class="orario"
                           circle
-                          v-for="plan in movie.Plans"
-                          :key="`${plan.Date}-${plan.Room.Id}`"
+                          v-for="plan in movie.plans"
+                          :key="`${plan.date}-${plan.room._id}`"
                         >
-                          {{ new Date(plan.Date).getHours() }}:{{
-                            new Date(plan.Date).getMinutes()
-                          }}<div>{{ plan.Room.Name }}</div></el-button
+                          {{ new Date(plan.date).getHours() }}:{{
+                            new Date(plan.date).getMinutes()
+                          }}<div>{{ plan.room.name }}</div></el-button
                         >
                       </el-row>
                       <el-row>

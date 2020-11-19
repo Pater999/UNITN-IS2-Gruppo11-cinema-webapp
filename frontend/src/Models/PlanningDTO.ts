@@ -1,13 +1,7 @@
 import { RoomDTO } from './RoomDTO';
 
-export default class PlanningDTO
+export default interface PlanningDTO
 {
-    Date: Date;
-    Room: RoomDTO;
-
-    constructor(date: Date, room: RoomDTO)
-    {
-        this.Date = date;
-        this.Room = room;
-    }
+    date: Date;
+    room: RoomDTO;
 }

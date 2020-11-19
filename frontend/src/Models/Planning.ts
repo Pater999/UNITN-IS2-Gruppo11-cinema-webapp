@@ -1,11 +1,5 @@
-export default class Planning
+export default interface Planning
 {
-    Date: Date;
-    RoomId: number;
-
-    constructor(date: Date, roomId: number)
-    {
-        this.Date = date;
-        this.RoomId = roomId;
-    }
+    date: Date;
+    roomId: string;
 }

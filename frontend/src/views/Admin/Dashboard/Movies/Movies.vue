@@ -10,27 +10,27 @@
         >Aggiungi Film</el-button
       >
     </div>
-    <el-collapse v-for="movie in movies" :key="movie.Id">
-      <el-collapse-item :name="movie.Title">
+    <el-collapse v-for="movie in movies" :key="movie._id">
+      <el-collapse-item :name="movie.title">
         <template slot="title"
           ><div style="width:100%" class=" d-flex align-items-center">
             
             <img
               class="mr-3 roundedFilm"
-              :src="movie.ImageUrl"
+              :src="movie.imageUrl"
               width="75px"
               height="75px"
-              :alt="movie.Title"
+              :alt="movie.title"
             />
             
-            <h3>{{ movie.Title }}</h3>
+            <h3>{{ movie.title }}</h3>
             <div class="ml-auto">
             <el-button class="mr-5" type="danger" @click.native.stop="deleteFilm(movie)">Elimina</el-button>
             </div>
           </div>
         </template>
-        <div v-for="plan in movie.Plans" :key="`${plan.Date}-${plan.Room.Id}`">
-          <h5>{{ plan.Room.Name }} - {{ printDate(new Date(plan.Date)) }}</h5>
+        <div v-for="plan in movie.plans" :key="`${plan.date}-${plan.room._id}`">
+          <h5>{{ plan.room.name }} - {{ printDate(new Date(plan.date)) }}</h5>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -94,9 +94,9 @@
         >
           <el-option
             v-for="item in formModelMovie.rooms"
-            :key="item.Id"
-            :label="item.Name"
-            :value="item.Id"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
           >
           </el-option>
         </el-select>
@@ -106,7 +106,7 @@
 
         <div
           v-for="item in formModelMovie.dateTimesList"
-          :key="`${item.Date}-${item.RoomId}`"
+          :key="`${item.date}-${item.roomId}`"
         >
           <el-card class="box-card mt-3 mb-3">
             <div class="d-flex align-items-center">

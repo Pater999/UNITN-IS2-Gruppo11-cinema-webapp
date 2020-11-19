@@ -17,8 +17,8 @@ const moviesSchema = new Schema({
   },
   plans: [
     {
-      Date: { type: Date },
-      RoomId: { type: Number },
+      date: { type: Date },
+      roomId: { type: String },
     },
   ],
 });

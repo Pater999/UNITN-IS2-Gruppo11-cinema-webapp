@@ -17,7 +17,7 @@ export default class AdminRooms extends Vue {
 
   formModelRoom = {
     name: '',
-    id: 0
+    id: ""
   };
 
   showTitle() {

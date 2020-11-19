@@ -1,7 +1,7 @@
 import { Form } from 'element-ui';
 import { Component, Vue } from 'vue-property-decorator';
 import axiosInstance from '@/axios-instance';
-
+import { LOGIN, SET_USER } from '@/store/types/actions-types';
 
 @Component
 export default class UserLogin extends Vue {
@@ -35,10 +35,14 @@ export default class UserLogin extends Vue {
             password: this.formModel.password
           };
 
-          const response = await axiosInstance.post('/users/login', request);
-          console.log(response);
+          const response = await axiosInstance.post('/login', request);
+          await this.$store.dispatch(LOGIN, {
+            token: response.data.token,
+            authState: true
+          });
+          await this.$store.dispatch(SET_USER, { username: response.data.username, role: response.data.role });
 
-          this.$router.replace('/users/homepage');
+          this.$router.replace('/homepage');
         } catch (error) {
           if (error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
         } finally {

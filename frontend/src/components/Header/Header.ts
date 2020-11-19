@@ -4,14 +4,26 @@ import { LOGOUT } from '@/store/types/actions-types';
 
 @Component({
   computed: {
-    ...mapState(['username'])
+    ...mapState(['username', 'isAuthenticated', 'role'])
   }
 })
 export default class Header extends Vue {
   username!: string;
+  isAuthenticated!: boolean;
+  role!: string;
 
   logOut() {
+    const r = this.role;
     this.$store.dispatch(LOGOUT);
-    this.$router.replace('/admin/login');
+    if (r === 'admin') this.$router.replace('/admin/login');
+    else this.$router.replace('/login');
+  }
+
+  logIn() {
+    this.$router.push('/login');
+  }
+
+  goToAdminDashboard() {
+    this.$router.push('/admin/dashboard');
   }
 }

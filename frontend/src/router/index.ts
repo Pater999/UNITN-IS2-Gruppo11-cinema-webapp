@@ -16,7 +16,7 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
   {
     path: '/', // TEMPORANEO DA RIMUOVERE!
-    redirect: '/admin/login'
+    redirect: '/homepage'
   },
   {
     path: '/admin',
@@ -51,7 +51,7 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
-    path: '/users/login',
+    path: '/login',
     name: 'users-login-page',
     component: UsersLoginPage,
     meta: {
@@ -59,7 +59,7 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
-    path: '/users/homepage',
+    path: '/homepage',
     name: 'users-homepage-page',
     component: UsersHomePage,
     meta: {

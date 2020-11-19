@@ -1,8 +1,7 @@
-import axiosInstance from "@/axios-instance";
-import { FareDto } from "@/Models/FareDto";
-import { Form } from "element-ui";
-import { Component, Vue } from "vue-property-decorator";
-
+import axiosInstance from '@/axios-instance';
+import { FareDto } from '@/Models/FareDto';
+import { Form } from 'element-ui';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class AdminFares extends Vue {
@@ -12,12 +11,12 @@ export default class AdminFares extends Vue {
 
   Fares: FareDto[] = [];
 
-  formLabelWidth = "100px";
+  formLabelWidth = '100px';
 
   formModelFare = {
-    name: "",
-    desc: "",
-    price: 0.0,
+    name: '',
+    desc: '',
+    price: 0.0
   };
 
   async mounted() {
@@ -25,18 +24,17 @@ export default class AdminFares extends Vue {
   }
 
   logOut() {
-    this.$router.replace("/admin/login");
+    this.$router.replace('/admin/login');
   }
 
   async deleteFare(row: FareDto) {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.delete(`/Fares/${row.Id}`);
+      const response = await axiosInstance.delete(`/Fares/${row._id}`);
       this.$message.success(response.data.message);
       await this.getFares();
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error)
-        this.$message.error(error.response.data.error);
+      if (error.response && error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
     } finally {
       this.isLoading = false;
     }
@@ -45,11 +43,10 @@ export default class AdminFares extends Vue {
   async getFares() {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.get("/Fares");
+      const response = await axiosInstance.get('/Fares');
       this.Fares = response.data as FareDto[];
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error)
-        this.$message.error(error.response.data.error);
+      if (error.response && error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
     } finally {
       this.isLoading = false;
     }
@@ -66,13 +63,13 @@ export default class AdminFares extends Vue {
   get formRules() {
     const required = {
       required: true,
-      message: "Campo obbligatorio",
+      message: 'Campo obbligatorio'
     };
 
     return {
       name: required,
       desc: required,
-      price: required,
+      price: required
     };
   }
 
@@ -83,12 +80,11 @@ export default class AdminFares extends Vue {
       if (isValid) {
         this.isLoading = true;
         try {
-          await axiosInstance.post("/fares", this.formModelFare);
-          this.$message.success("Tariffa aggiunta con successo!");
+          await axiosInstance.post('/fares', this.formModelFare);
+          this.$message.success('Tariffa aggiunta con successo!');
           await this.getFares();
         } catch (error) {
-          if (error.response.data && error.response.data.error)
-            this.$message.error(error.response.data.error);
+          if (error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
         } finally {
           $form.resetFields();
 

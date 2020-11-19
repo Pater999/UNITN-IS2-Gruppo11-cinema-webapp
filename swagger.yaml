@@ -154,8 +154,7 @@ paths:
       in: "path"
       description: "id of the fare"
       required: true
-      type: "integer"
-      format: "int32"
+      type: "string"
     delete:
       security:
         - Bearer: []
@@ -219,8 +218,7 @@ paths:
       in: "path"
       description: "id of the cinema's room"
       required: true
-      type: "integer"
-      format: "int32"
+      type: "string"
     put:
       security:
         - Bearer: []
@@ -273,8 +271,7 @@ paths:
       in: "path"
       description: "id of the cinema's room"
       required: true
-      type: "integer"
-      format: "int32"
+      type: "string"
     get:
       summary: "List all rows of a room"
       responses:
@@ -374,8 +371,7 @@ paths:
       in: "path"
       description: "id of the movie"
       required: true
-      type: "integer"
-      format: "int32"
+      type: "string"
     
     delete:
       security:
@@ -399,8 +395,7 @@ paths:
       in: "path"
       description: "id of the movie"
       required: true
-      type: "integer"
-      format: "int32"
+      type: "string"
     post:
         security:
           - Bearer: []
@@ -453,7 +448,7 @@ definitions:
     
     properties:
         planningId:
-          type: number
+          type: string
           description: "Movie's planning"
         room:
           type: object
@@ -475,7 +470,7 @@ definitions:
       
     properties:
         movieId:
-          type: number
+          type: string
           description: "Movie's Id"
         imageUrl:
           type: string
@@ -549,7 +544,7 @@ definitions:
       
     properties:
       fareId:
-        type: integer
+        type: string
         format: "int32"
         description: "fare's id"
       name:
@@ -570,8 +565,7 @@ definitions:
 
     properties:
       rowId:
-        type: integer
-        format: "int32"
+        type: string
         description: "room's id"
       seatsNumber: 
         type: number
@@ -586,8 +580,7 @@ definitions:
 
     properties:
       roomId:
-        type: integer
-        format: "int32"
+        type: string
         description: "room's id"
       name:
         type: string

@@ -75,15 +75,19 @@ paths:
               name:
                 type: string
                 description: "Name of the user"
+                example: "Paolo"
               surname:
                 type: string
                 description: "Surname of the user"
+                example: "Rossi"
               username:
                 type: string
                 description: "Username of the user"
+                example: "paolorossi"
               email:
                 type: string
                 description: "Email of the user"
+                example: "paolo.rossi@gmail.com"
               password:
                 type: string
                 description: "Password of the user"
@@ -129,12 +133,15 @@ paths:
               name:
                 type: string
                 description: "fare's name"
+                example: "Bambini"
               price: 
                 type: number
                 description: "fare's price"
+                example: "10"
               desc:
                 type: string
                 description: "fare's description"
+                example: "Tariffa per bambini"
           
       responses:
         201:
@@ -199,7 +206,7 @@ paths:
               name:
                 type: string
                 description: "room's name"
-          
+                example: "Sala 1"
       responses:
         201:
           description: 'Successful add, room added'
@@ -233,6 +240,7 @@ paths:
               name:
                 type: string
                 description: "Room's name"
+                example: "Sala 1"
       responses:
         200:
           description: "Successful update, cinema's room update"
@@ -298,6 +306,7 @@ paths:
               seatsNumber:
                 type: integer
                 description: "row seats"
+                example: "1"
       responses:
         201:
           description: 'Successful add, row added'
@@ -346,13 +355,15 @@ paths:
                 title:
                   type: string
                   description: "movie's name"
+                  example: "Revenant"
                 imageUrl: 
                   type: string
                   description: "movie's image"
+                  example: "https://pad.mymovies.it/filmclub/2011/11/053/locandina.jpg"
                 desc:
                   type: string
-                  description: "movie's description"
-            
+                  description: "movie's description"   
+                  example: "Durante una battuta di caccia nella selvaggia America, Hugh Glass viene attaccato da un orso e lasciato morire. Malgrado l'inimmaginabile dolore, il tradimento dell'amico fidato e l'inverno inclemente, l'uomo cerca inesorabilmente di sopravvivere."
         responses:
           201:
             description: 'Successful add, the movie added'
@@ -422,10 +433,12 @@ paths:
                       roomId:
                         type: number
                         description: "Movie's room"
+                        example: "1"
                       date:
                         type: string
                         format: date-time
                         description: "Movie's date time"
+                        example: "01/01/2020"
                   description: "Movie's plannings"
         responses:
           201:
@@ -450,14 +463,17 @@ definitions:
         planningId:
           type: string
           description: "Movie's planning"
+          example: "1"
         room:
           type: object
           $ref: "#/definitions/CinemaRoomDTO"
           description: "Movie's room"
+          example: ""
         date:
           type: string
           format: date-time
           description: "Movie's date time"
+          example: "01/01/2020"
   
   MovieDTO:
     type: object
@@ -472,15 +488,19 @@ definitions:
         movieId:
           type: string
           description: "Movie's Id"
+          example: "1"
         imageUrl:
           type: string
           description: "Movie's image Url"
         title:
           type: string
           description: "Movie's title"
+          example: "Revenant"
         desc:
           type: string
           description: "Movie desc"
+          example: "Durante una battuta di caccia nella selvaggia America, Hugh Glass viene attaccato da un orso e lasciato morire. Malgrado l'inimmaginabile dolore, il tradimento dell'amico fidato e l'inverno inclemente, l'uomo cerca inesorabilmente di sopravvivere."
+          
         planning:
           type: array
           items:
@@ -497,12 +517,15 @@ definitions:
       token:
         type: string
         description: 'Bearer Token'
+        example: "mmmckdnmow"
       username:
         type: string
         description: 'Username'
+        example: "paolorossi"
       role:
         type: string
         description: 'User role'
+        example: "admin"
   
   RegisterDTO:
     type: object
@@ -518,21 +541,27 @@ definitions:
       id:
         type: string
         description: 'User id'
+        example: "1"
       username:
         type: string
         description: 'User username'
+        example: "paolorossi"
       email:
         type: string
         description: 'User email'
+        example: "paolorossi@gmail.com"
       name:
         type: string
         description: 'User name'
+        example: "Paolo"
       surname:
         type: string
         description: 'User surname'
+        example: "Rossi"
       role:
         type: string
         description: 'User role'
+        example: "User"
 
   FareDTO:
     type: object
@@ -547,15 +576,19 @@ definitions:
         type: string
         format: "int32"
         description: "fare's id"
+        example: "1"
       name:
         type: string
         description: "fare's name"
+        example: "Bambini"
       price: 
         type: number
         description: "fare's price"
+        example: "10"
       desc:
         type: string
         description: "fare's description"
+        example: "Tariffa per bambini"
   
   RoomRowDTO:
     type: object
@@ -567,9 +600,11 @@ definitions:
       rowId:
         type: string
         description: "room's id"
+        example: "1"
       seatsNumber: 
         type: number
         description: "number of seats"
+        example: "20"
 
   CinemaRoomDTO:
     type: object
@@ -582,9 +617,12 @@ definitions:
       roomId:
         type: string
         description: "room's id"
+        example: "1"
       name:
         type: string
         description: "room's name"
+        example: "Sala2"
       seats: 
         type: number
         description: "number of seats"
+        example: "50"

@@ -1,5 +1,7 @@
 ## UNITN-IS2-Gruppo11-cinema-webapp
 
+[![Build Status](https://travis-ci.com/Pater999/UNITN-IS2-Gruppo11-cinema-webapp.svg?token=gy2Xbz67HoPW4qxz6TDX&branch=master)](https://travis-ci.com/Pater999/UNITN-IS2-Gruppo11-cinema-webapp)
+
 ### Installare le dipendenze
 
 * Nella route del progetto fare

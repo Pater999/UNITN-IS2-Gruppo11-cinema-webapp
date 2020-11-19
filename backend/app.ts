@@ -14,9 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 // CORS BYPASS
 app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
@@ -30,11 +30,16 @@ app.use((req: any, res: express.Response, next: express.NextFunction) => {
   next();
 });
 
+
+app.use('/', express.static('public'));
+
 app.use('/api/v1/login', login);
 app.use('/api/v1/fares', fares);
 app.use('/api/v1/rooms', rooms);
 app.use('/api/v1/movies', movies);
 app.use('/api/v1/users', users);
+
+app.all('*', (req, res) => {     res.redirect('/') })
 
 /* Default 404 handler */
 app.use((req: express.Request, res: express.Response) => {

@@ -6,7 +6,7 @@ info:
   license:
     name: MIT
     url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: polls.apiblueprint.org
+host: smart-cinema.herokuapp.com
 basePath: /api/v1
 schemes:
 - https

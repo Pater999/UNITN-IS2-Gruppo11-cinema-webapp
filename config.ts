@@ -6,6 +6,10 @@ const config: any = {
   production: {
     port: process.env.PORT || 5000,
     saltingRounds: 10
+  },
+  test: {
+    port: process.env.PORT || 5000,
+    saltingRounds: 10
   }
 };
 

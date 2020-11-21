@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "postinstall": "tsc && cd frontend && npm install && npm install --only=dev && npm run-script build && mv -i -v dist ../dist/public",
+    "postinstall": "tsc && cd frontend && npm install && npm install --only=dev && npm run-script build && mv -i -v dist ../public",
+    "heroku-cleanup": "echo Removing useless directories... && rm -r frontend && rm -r backend && echo Successfully removed useless directories!",
     "tsc": "tsc",
     "dev": "tsc && cross-env NODE_ENV=development node -r dotenv/config dist/index.js",
     "test": "jest"

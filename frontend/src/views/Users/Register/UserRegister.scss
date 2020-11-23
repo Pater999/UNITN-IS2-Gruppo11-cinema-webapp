@@ -1,8 +1,9 @@
 #bg {
-  background-image: url('../../../assets/login_bg.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position-x: center;
+  background-color: #cf0c18;
+}
+
+.img {
+  width: 250px;
 }
 
 .white {
@@ -19,6 +20,7 @@ form {
   background-color: #d4d4d477;
   border-radius: 5px;
   color: #ececf1;
+  width: 95%;
   padding: 35px;
   margin: auto;
 }
@@ -30,4 +32,37 @@ form {
 
 .el-form-item__error {
   color: #000;
+}
+
+#icon {
+  height: 35%;
+}
+#lform {
+  height: 65%;
+}
+
+@media screen and (min-width: 800px) {
+  #title {
+    font-size: 50px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .row {
+    padding-bottom: 10%;
+  }
+  #icon {
+    height: 20%;
+  }
+  #lform {
+    height: 80%;
+  }
+
+  #title {
+    font-size: 40px;
+  }
+  form {
+    width: 350px;
+    padding-bottom: 15%;
+  }
 }

@@ -1,10 +1,9 @@
 <template>
     <section id="bg" class="container-fluid">
-      <div class="row" style="margin-top: 4em;">
+      <div class="row" style="padding-top: 20em;">
         <div class="col">
           <div class="login-panel bg-black text-left">
             <h1 class="display-3 font-weight-bold white">SmartCinema</h1>
-            <!-- <p class="font-weight-bold white">Benvenuto!</p> -->
             <br />
 
             <el-form id="form" ref="loginForm" :model="formModel" :rules="formRules" @submit.native.prevent="submit()">

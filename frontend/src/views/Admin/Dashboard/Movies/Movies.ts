@@ -101,7 +101,7 @@ export default class AdminMovies extends Vue {
     this.isNextStep = false;
     this.formModelMovie.selectedRoom = this.formModelMovie.rooms[0]._id;
     this.formModelMovie.dateTimesList = [];
-    this.formModelMovie.imageUrl = "https://images-na.ssl-images-amazon.com/images/I/81oND6XuHsL._SY679_.jpg"
+    this.formModelMovie.imageUrl = ""
 
     const date = this.formModelMovie.dateTimeSelected;
     this.formModelMovie.dateTimeSelected.setDate(date.getDate() + 1);

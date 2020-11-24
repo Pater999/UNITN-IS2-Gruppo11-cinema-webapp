@@ -1,16 +1,13 @@
-
-
-#bg{
+#bg {
   background-color: #cf0c18;
   background-size: 100%;
-
 }
 
-.white{
-  color:whitesmoke;
+.white {
+  color: whitesmoke;
 }
 
-.row{
+.row {
   justify-content: center;
   align-items: center;
 }
@@ -24,18 +21,17 @@ form {
   margin: auto;
 }
 
-.col{
+.col {
   display: flex;
   justify-content: center;
 }
 
-
-.el-form-item__error{
+.el-form-item__error {
   color: #000;
 }
 
-.img{
-  width:250px;
+.img {
+  width: 450px;
 }
 
 @media screen and (min-width: 601px) {
@@ -45,20 +41,21 @@ form {
 }
 
 @media screen and (max-width: 600px) {
-  #title {  
+  #title {
     font-size: 55px;
   }
-  form {  
+  form {
     width: 90%;
     padding-bottom: 5%;
   }
-
-
+  .img {
+    width: 350px;
+  }
 }
 
-#icon{
+#icon {
   height: 35%;
 }
-#lform{
+#lform {
   height: 65%;
 }

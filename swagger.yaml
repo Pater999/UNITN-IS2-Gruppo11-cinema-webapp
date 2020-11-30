@@ -376,7 +376,7 @@ paths:
           403:
             description: Not authorized to do this action
   
-  /movies/:{movieId}:
+  /movies/{movieId}:
     parameters:
     - name: "movieId"
       in: "path"
@@ -400,7 +400,7 @@ paths:
         404:
           description: Movie not found
   
-  /movies/:{movieId}/plannings:
+  /movies/{movieId}/plannings:
     parameters:
     - name: "movieId"
       in: "path"
@@ -451,7 +451,56 @@ paths:
             description: Admin not logged in
           403:
             description: Not authorized to do this action
-
+            
+  /movies/{movieId}/plannings/{planId}/reservations:
+    parameters:
+      - in: "path"
+        name: "movieId"
+        description: "id of the movie"
+        required: true
+        type: "string"
+      - in: "path"
+        name: "planId"
+        description: "id of the plan"
+        required: true
+        type: "string"
+    post:
+        security:
+          - Bearer: []
+        summary: "Book a seat for a movie"
+        parameters:
+          - in: body
+            required: true
+            name: reservation
+            schema:
+              type: object
+              required:
+                - userId
+                - seat
+                - fareId
+              properties:
+                userId:
+                  type: string
+                  description: "User id"
+                  example: "1"
+                seat: 
+                  type: number
+                  description: "Seat number"
+                  example: 10
+                fareId:
+                  type: string
+                  description: "Fare id"   
+                  example: "1"
+        responses:
+          201:
+            description: "Successful add, movie planning's reservationa added"
+            schema:
+                $ref: '#/definitions/ReservationDTO'
+          400:
+            description: Some fields are null or empty
+          401:
+            description: User not logged in
+            
 definitions:
   PlanningDTO:
     type: object
@@ -625,4 +674,29 @@ definitions:
       seats: 
         type: number
         description: "number of seats"
+        example: "50"
+        
+  ReservationDTO:
+    type: object
+    required:
+      - fare
+      - user
+      - seat
+    
+    properties:
+      reservationId:
+        type: string
+        description: "Movie's planning reservation id"
+        example: "1"
+      fare:
+        type: object
+        $ref: "#/definitions/FareDTO"
+        description: "reservation's fare"
+      user:
+        type: object
+        $ref: "#/definitions/RegisterDTO"
+        description: "reservation's fare"
+      seat: 
+        type: number
+        description: "seat number"
         example: "50"

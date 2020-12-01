@@ -10,7 +10,7 @@
             <el-tab-pane label="Film" name="Movies"><AdminMovies /></el-tab-pane>
             <el-tab-pane label="Utenti" name="Users"><AdminUsers /></el-tab-pane>
             <el-tab-pane label="Prenotazioni" name="Reservations"> <Reservations /></el-tab-pane>
-            <el-tab-pane label="Comunicazioni" name="Ads"> <Ads/></el-tab-pane>
+            <el-tab-pane label="Comunicazioni" name="Comunications"> <Comunications /></el-tab-pane>
           </el-tabs>
         </div>
       </div>

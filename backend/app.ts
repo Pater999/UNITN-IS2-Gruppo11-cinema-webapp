@@ -6,7 +6,7 @@ import { rooms } from './rooms';
 import { movies } from './movies';
 import { users } from './users';
 import { reservations } from './reservations';
-import { ads } from './ads';
+import { comunications } from './comunications';
 
 const app = express();
 
@@ -41,7 +41,7 @@ app.use('/api/v1/rooms', rooms);
 app.use('/api/v1/movies', movies);
 app.use('/api/v1/users', users);
 app.use('/api/v1/reservations', reservations);
-app.use('/api/v1/ads', ads);
+app.use('/api/v1/comunications', comunications);
 
 app.all('*', (req, res) => {     res.redirect('/') })
 

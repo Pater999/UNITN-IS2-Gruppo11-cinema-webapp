@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import Ads from "./Database/schemas/ads";
+import Comunications from "./Database/schemas/comunications";
 import { validateTokenAdmin } from "./Utilities/authentication";
 import { connUri, dbOptions } from "./Database/databaseService";
 
@@ -10,9 +10,9 @@ router.get("", async (req: express.Request, res: express.Response) => {
   let db = null;
   try {
     db = await mongoose.createConnection(connUri, dbOptions);
-    const AdMod = db.model("Ads", Ads);
-    const ads = await AdMod.find().select("-__v").exec();
-    res.status(200).json(ads);
+    const ComunicationMod = db.model("Comunications", Comunications);
+    const comunications = await ComunicationMod.find().select("-__v").exec();
+    res.status(200).json(comunications);
   } catch (err) {
     res.status(500).json({ error: "Internal server error." });
   } finally {
@@ -22,22 +22,22 @@ router.get("", async (req: express.Request, res: express.Response) => {
 
 router.post("", validateTokenAdmin, async (req: express.Request, res: express.Response) => {
   const title= req.body.title;
-  const ad = req.body.ad;
+  const desc = req.body.desc;
   const date = req.body.date;
 
-  if (!title || !ad || !date) res.status(400).json({ error: "Some Fields are null or empty!" });
+  if (!title || !desc || !date) res.status(400).json({ error: "Some Fields are null or empty!" });
   else {
-    const elem = { title, ad, date };
+    const elem = { title, desc, date };
     let db = null;
     try {
       db = await mongoose.createConnection(connUri, dbOptions);
-      const AdMod = db.model("Ads", Ads);
-      const ads = (await AdMod.create(elem)) as any;
+      const ComunicationMod = db.model("Comunications", Comunications);
+      const comunications = (await ComunicationMod.create(elem)) as any;
       res.status(201).json({
-        id: ads._id,
-        title: ads.title,
-        ad: ads.ad,
-        date: ads.date,
+        id: comunications._id,
+        title: comunications.title,
+        desc: comunications.desc,
+        date: comunications.date,
       });
     } catch (err) {
       res.status(500).json({ error: "Internal server error." });
@@ -48,19 +48,19 @@ router.post("", validateTokenAdmin, async (req: express.Request, res: express.Re
 });
 
 router.delete(
-  "/:adId",
+  "/:comunicationId",
   validateTokenAdmin,
   async (req: express.Request, res: express.Response) => {
-    const id = req.params.adId;
+    const id = req.params.comunicationId;
     if (!id) res.status(400).json({ error: "Some Fields are null or empty!" });
     else {
       let db = null;
       try {   
         db = await mongoose.createConnection(connUri, dbOptions);
-        const AdMod = db.model("Ads", Ads);
+        const ComunicationMod = db.model("Comunications", Comunications);
 
-        const ad = await AdMod.findByIdAndDelete(id);
-        if (!ad) throw new Error();
+        const comunication = await ComunicationMod.findByIdAndDelete(id);
+        if (!comunication) throw new Error();
 
         res.status(200).json({ message: "Annuncio rimosso con successo!" });
       } catch (err) {
@@ -72,4 +72,4 @@ router.delete(
   }
 );
 
-export { router as ads };
+export { router as comunications };

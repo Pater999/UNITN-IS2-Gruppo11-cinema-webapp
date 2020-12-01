@@ -476,17 +476,12 @@ paths:
               type: object
               required:
                 - userId
-                - seat
                 - fareId
               properties:
                 userId:
                   type: string
                   description: "User id"
                   example: "1"
-                seat: 
-                  type: number
-                  description: "Seat number"
-                  example: 10
                 fareId:
                   type: string
                   description: "Fare id"   
@@ -681,7 +676,6 @@ definitions:
     required:
       - fare
       - user
-      - seat
     
     properties:
       reservationId:
@@ -696,7 +690,3 @@ definitions:
         type: object
         $ref: "#/definitions/RegisterDTO"
         description: "reservation's fare"
-      seat: 
-        type: number
-        description: "seat number"
-        example: "50"

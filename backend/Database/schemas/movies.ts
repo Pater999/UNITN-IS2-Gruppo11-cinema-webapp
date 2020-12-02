@@ -18,7 +18,13 @@ const moviesSchema = new Schema({
   plans: [
     {
       date: { type: Date },
-      roomId: { type: 'String' }
+      roomId: { type: 'String' },
+      reservations: [
+        {
+          userId: {type: "String"},
+          fareId: {type: "String"}
+        }
+      ]
     }
   ]
 });
@@ -26,6 +32,20 @@ const moviesSchema = new Schema({
 moviesSchema.virtual('plans.room', {
   ref: 'Rooms',
   localField: 'plans.roomId',
+  foreignField: '_id',
+  justOne : true
+});
+
+moviesSchema.virtual('plans.reservations.user', {
+  ref: 'Users',
+  localField: 'plans.reservations.userId',
+  foreignField: '_id',
+  justOne : true
+});
+
+moviesSchema.virtual('plans.reservations.fare', {
+  ref: 'Fares',
+  localField: 'plans.reservations.fareId',
   foreignField: '_id',
   justOne : true
 });

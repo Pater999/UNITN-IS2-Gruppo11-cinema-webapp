@@ -12,4 +12,4 @@
 </template>
 
 <script lang="ts" src="./Dashboard.ts" />
-<style lang="scss" src="./Dashboard.scss" />
+<style scoped lang="scss" src="./Dashboard.scss" />

@@ -130,4 +130,4 @@
 </template>
 
 <script lang="ts" src="./Movies.ts" />
-<style lang="scss" src="./Movies.scss" />
+<style scoped lang="scss" src="./Movies.scss" />

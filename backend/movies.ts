@@ -126,12 +126,21 @@ router.post('/:movieId/plannings/:planId/reservations', validateTokenUser, async
       db.model('Fares', Fares);
       const user = await UserMod.findOne({ Username: tokenUsername });
       if (!user) res.status(404).json({ error: 'Username not found' });
-      else if (user._id != reservation.userId) res.status(403).json({ error: 'Non puoi prenotare un biglietto a nome di un altro utente' });
-      const movie = (await MovieMod.findOneAndUpdate({ _id: movieId, 'plans._id': planId }, { $push: { 'plans.$.reservations': { userId: reservation.userId, fareId: reservation.fareId } } }, { new: true, useFindAndModify: false })) as any;
+      else if (user._id != reservation.userId) {
+        res.status(403).json({ error: 'Non puoi prenotare un biglietto a nome di un altro utente' });
+      }
 
-      const ret = (await MovieMod.findOne({ _id: movieId, 'plans._id': planId }, { 'plans.$': 1 }).populate('plans.reservations.user', '-__v -Password').populate('plans.reservations.fare', '-__v')) as any;
+      // Aggiungi la prenotazione con utente e tariffa all'array delle prenotazione di un planning di un film
+      const movie = (await MovieMod.findOneAndUpdate({ _id: mongoose.Types.ObjectId(movieId), 'plans._id': mongoose.Types.ObjectId(planId) }, { $push: { 'plans.$.reservations': { userId: mongoose.Types.ObjectId(reservation.userId), fareId: mongoose.Types.ObjectId(reservation.fareId) } } }, { new: true, useFindAndModify: false })) as any;
+
+      // Cerca la prenotazione per restituirla
+      const ret = (await MovieMod.findOne({ _id: mongoose.Types.ObjectId(movieId), 'plans._id': mongoose.Types.ObjectId(planId) }, { 'plans.$': 1 })
+        .populate('plans.reservations.user', '-__v -Password')
+        .populate('plans.reservations.fare', '-__v')) as any;
+
       res.status(201).json(ret.plans[0].reservations.slice(-1));
     } catch (err) {
+      console.log(err);
       res.status(500).json({ error: 'Internal server error.' });
     } finally {
       db && db.close();

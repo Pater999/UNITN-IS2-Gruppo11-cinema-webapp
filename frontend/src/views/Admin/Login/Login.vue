@@ -24,4 +24,4 @@
 </template>
 
 <script lang="ts" src="./Login.ts" />
-<style lang="scss" src="./Login.scss" />
+<style scoped lang="scss" src="./Login.scss" />

@@ -40,7 +40,7 @@ export default class Login extends Vue {
             token: response.data.token,
             authState: true
           });
-          await this.$store.dispatch(SET_USER, { username: response.data.username, role: response.data.role });
+          await this.$store.dispatch(SET_USER, { username: response.data.username, role: response.data.role, userId: response.data.id });
           this.$router.replace('/admin/dashboard');
         } catch (error) {
           if (error.response.data && error.response.data.error) this.$message.error(error.response.data.error);

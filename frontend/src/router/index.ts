@@ -9,6 +9,8 @@ const ErrorPage = () => import(/* webpackChunkName: "404-page" */ '../views/404/
 const UsersLoginPage = () => import(/* webpackChunkName: "users-login-page" */ '../views/Users/Login/UserLogin.vue');
 const UsersRegisterPage = () => import(/* webpackChunkName: "users-register-page" */ '../views/Users/Register/UserRegister.vue');
 const UsersHomePage = () => import(/* webpackChunkName: "users-home-page" */ '../views/Users/Homepage/HomepageMovies.vue');
+const UsersComunications = () => import(/* webpackChunkName: "users-comunications-page" */ '../views/Users/Comunications/UsersComunications.vue');
+
 
 const appTitle = 'SmartCinema';
 
@@ -75,6 +77,16 @@ const routes: Array<RouteConfig> = [
       title: `${appTitle} - Users homepage`
     }
   },
+
+  {
+    path: '/comunications',
+    name: 'users-comunications-page',
+    component: UsersComunications,
+    meta: {
+      title: `${appTitle} - Users comunication`
+    }
+  },
+
   {
     path: '/404',
     name: '404-page',

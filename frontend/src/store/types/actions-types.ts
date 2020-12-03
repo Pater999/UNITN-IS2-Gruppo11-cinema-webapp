@@ -1,6 +1,7 @@
 const STORE_TOKEN = 'STORE_TOKEN';
 const SET_ROLE = 'SET_ROLE';
 const SET_USERNAME = 'SET_USERNAME';
+const SET_USERID = "SET_USERID";
 const SET_AUTH_STATE = 'SET_AUTH_STATE';
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
@@ -17,5 +18,6 @@ export {
   LOGIN,
   LOGOUT,
   SET_USER,
-  READ_USER
+  READ_USER,
+  SET_USERID
 };

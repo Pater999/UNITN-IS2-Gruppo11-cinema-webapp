@@ -2,10 +2,12 @@ import express from 'express';
 import { PlanningDTO } from './models/DTO/PlanningDTO';
 import { isValidURL } from './Utilities/isValidURL';
 import mongoose from 'mongoose';
-import { validateTokenAdmin } from './Utilities/authentication';
+import { validateTokenAdmin, validateTokenUser } from './Utilities/authentication';
 import { connUri, dbOptions } from './Database/databaseService';
 import Movies from './Database/schemas/movies';
 import Rooms from './Database/schemas/rooms';
+import Users from './Database/schemas/users';
+import Fares from './Database/schemas/fares';
 
 const router = express.Router();
 
@@ -16,7 +18,7 @@ router.get('', async (req: express.Request, res: express.Response) => {
     db = await mongoose.createConnection(connUri, dbOptions);
     const MovieMod = db.model('Movies', Movies);
     db.model('Rooms', Rooms);
-    let movies = (await MovieMod.find().populate('plans.room', "-__v -rows").select('-__v').exec()) as any;
+    let movies = (await MovieMod.find().populate('plans.room', '-__v -rows').select('-__v -plans.reservations').exec()) as any;
 
     if (date) {
       const filtroData = new Date(date as string);
@@ -103,6 +105,44 @@ router.delete('/:movieId', validateTokenAdmin, async (req: express.Request, res:
       res.status(200).json({ message: 'element removed' });
     } catch (err) {
       res.status(404).json({ error: 'Film non trovato!' });
+    } finally {
+      db && db.close();
+    }
+  }
+});
+
+router.post('/:movieId/plannings/:planId/reservations', validateTokenUser, async (req: express.Request, res: express.Response) => {
+  const { movieId, planId } = req.params;
+  const tokenUsername = res.locals.username;
+  let reservation: { userId: string; fareId: string } = req.body;
+
+  if (!movieId || !planId || !reservation || !reservation.userId || !reservation.fareId) res.status(400).json({ error: 'Some Fields are null or empty!' });
+  else {
+    let db = null;
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const MovieMod = db.model('Movies', Movies);
+      const UserMod = db.model('Users', Users);
+      db.model('Fares', Fares);
+      const user = await UserMod.findOne({ Username: tokenUsername });
+      if (!user) res.status(404).json({ error: 'Username not found' });
+      else if (user._id != reservation.userId) {
+        res.status(403).json({ error: 'Non puoi prenotare un biglietto a nome di un altro utente' });
+      }
+
+      // Aggiungi la prenotazione con utente e tariffa all'array delle prenotazione di un planning di un film
+      const movie = (await MovieMod.findOneAndUpdate({ _id: mongoose.Types.ObjectId(movieId), 'plans._id': mongoose.Types.ObjectId(planId) }, { $push: { 'plans.$.reservations': { userId: mongoose.Types.ObjectId(reservation.userId), fareId: mongoose.Types.ObjectId(reservation.fareId) } } }, { new: true, useFindAndModify: false })) as any;
+      if (!movie) res.status(404).json({ error: 'Movie plan not found by movieId and planId' });
+      else {
+        // Cerca la prenotazione per restituirla
+        const ret = (await MovieMod.findOne({ _id: mongoose.Types.ObjectId(movieId), 'plans._id': mongoose.Types.ObjectId(planId) }, { 'plans.$': 1 })
+          .populate('plans.reservations.user', '-__v -Password')
+          .populate('plans.reservations.fare', '-__v')) as any;
+
+        res.status(201).json(ret.plans[0].reservations.slice(-1));
+      }
+    } catch (err) {
+      res.status(500).json({ error: 'Internal server error.' });
     } finally {
       db && db.close();
     }

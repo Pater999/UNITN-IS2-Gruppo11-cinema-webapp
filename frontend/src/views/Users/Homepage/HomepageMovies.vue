@@ -3,20 +3,14 @@
     <Header />
     <div v-loading="isLoading" class="container">
       <div id="c" class=" d-flex flex-row-reverse align-items-start">
-        <el-date-picker
-          class="mt-4"
-          lang="it"
-          v-model="dateTimeSelected"
-          type="date"
-          @change="dateChanged()"
-        ></el-date-picker>
+        <el-date-picker class="mt-4" lang="it" v-model="dateTimeSelected" type="date" @change="dateChanged()"></el-date-picker>
       </div>
 
-      <div v-for="movie in movies" :key="movie.Id">
+      <div v-for="movie in movies" :key="movie._id">
         <div class="card mb-3">
           <div class="row no-gutters">
             <div class="col-md-2 ">
-              <img  :src="movie.imageUrl" height="100%" class="card-img" />
+              <img :src="movie.imageUrl" height="100%" class="card-img" />
             </div>
             <div class="col-md-8 my-auto">
               <div class="card-body">
@@ -29,29 +23,25 @@
             </div>
 
             <div class="col-md-2">
-              <div id="p" class=" h-75 d-flex flex-row-reverse align-items-start">
-                <el-button
-                  class="orario"
-                  circle
-                  v-for="plan in movie.plans"
-                  :key="`${plan.Date}-${plan.room._id}`"
-                >
-                  {{ new Date(plan.date).getHours() }}:{{ new Date(plan.date).getMinutes() }}
+              <el-radio-group v-model="selectedPlan" id="p" class=" h-75 d-flex flex-row-reverse align-items-start">
+                <el-radio-button class="mr-2" v-for="plan in movie.plans" :key="`${plan._id}-${plan.room._id}`" :disabled="isButtonDisabled" :label="movie._id + '-' + plan._id">
+                  {{ ('0' + new Date(plan.date).getHours()).slice(-2) }}:{{ ('0' + new Date(plan.date).getMinutes()).slice(-2) }}
                   <br />
-                  {{ plan.room.name }}
-                </el-button>
-              </div>
+                  {{ plan.room.name }}</el-radio-button
+                >
+              </el-radio-group>
 
               <div id="p" class="h-25 d-flex flex-row-reverse align-items-end">
-                <el-button type="primary">PRENOTA ORA</el-button>
+                <el-button :disabled="isButtonDisabled" @click="bookMovie" type="primary">PRENOTA ORA</el-button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <BookMovieComponent v-if="selectedMovie" :dialogIsVisible.sync="bookingDialogVisible" :movie="selectedMovie" />
   </CWrapper>
 </template>
 
 <script lang="ts" src="./HomepageMovies.ts" />
-<style lang="scss" src="./HomepageMovies.scss" />
+<style scoped lang="scss" src="./HomepageMovies.scss" />

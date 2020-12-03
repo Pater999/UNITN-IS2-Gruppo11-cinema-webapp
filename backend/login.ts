@@ -30,7 +30,7 @@ router.post('', async (req: express.Request, res: express.Response) => {
       const equals = await bcrypt.compare(password, user.get("Password"));
       if (equals) {
         const token = createToken(username, user.get("Role"));
-        res.status(200).json({ token, username: user.get("Username"), role: user.get("Role") });
+        res.status(200).json({ token, username: user.get("Username"), role: user.get("Role"), id: user._id });
       } else {
         res.status(401).json({ error: 'Password non corretta' });
       }

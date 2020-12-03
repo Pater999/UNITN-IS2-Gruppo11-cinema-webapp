@@ -40,7 +40,7 @@ export default class UserLogin extends Vue {
             token: response.data.token,
             authState: true
           });
-          await this.$store.dispatch(SET_USER, { username: response.data.username, role: response.data.role });
+          await this.$store.dispatch(SET_USER, { username: response.data.username, role: response.data.role, userId: response.data.id });
 
           this.$router.replace('/homepage');
         } catch (error) {
@@ -52,7 +52,7 @@ export default class UserLogin extends Vue {
     });
   }
 
-  goToRegister(){
+  goToRegister() {
     this.$router.replace('/register');
   }
 }

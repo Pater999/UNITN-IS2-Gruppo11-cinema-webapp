@@ -40,4 +40,4 @@
   </section>
 </template>
 <script lang="ts" src="./UserLogin.ts" />
-<style lang="scss" src="./UserLogin.scss" />
+<style scoped lang="scss" src="./UserLogin.scss" />

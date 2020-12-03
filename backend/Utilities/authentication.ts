@@ -51,7 +51,8 @@ const validateTokenUser = (req: any, res: express.Response, next: express.NextFu
       issuer: issuer
     };
     try {
-      jwt.verify(token, process.env.JWT_SECRET!, options);
+      const payload = jwt.verify(token, process.env.JWT_SECRET!, options) as any;
+      res.locals.username = payload.username;
       next();
     } catch (err) {
       result = {

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import Fares from "./Database/schemas/fares";
 import { validateTokenAdmin } from "./Utilities/authentication";
 import { connUri, dbOptions } from "./Database/databaseService";
+import Movies from './Database/schemas/movies';
 
 const router = express.Router();
 
@@ -60,11 +61,17 @@ router.delete("/:fareId", validateTokenAdmin, async (req: express.Request, res: 
       if (count <= 1) {
         res.status(409).json({ error: "Deve esserci almeno una Tariffa!" });
       } else {
-        const fare = await FareMod.findByIdAndDelete(id);
-        if (!fare)
-          throw new Error();
-        
-        res.status(200).json({ message: "Tariffa rimossa con successo!" });
+        const MovieMod = db.model('Movies', Movies);
+        const isUsed = await MovieMod.exists({ "plans.reservations": { $elemMatch: { fareId: id } } });
+        if (isUsed) {
+          res.status(409).json({ error: 'Non puoi eliminare una tariffa che è stata già utilizzata per una prenotazione!' });
+        }
+        else {
+          const fare = await FareMod.findByIdAndDelete(id);
+          if (!fare)
+            throw new Error();
+          res.status(200).json({ message: "Tariffa rimossa con successo!" });
+        }
       }
     } catch (err) {
       res.status(404).json({ error: "Tariffa non trovata!" });

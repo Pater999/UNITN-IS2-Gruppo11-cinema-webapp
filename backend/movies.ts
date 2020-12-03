@@ -132,15 +132,16 @@ router.post('/:movieId/plannings/:planId/reservations', validateTokenUser, async
 
       // Aggiungi la prenotazione con utente e tariffa all'array delle prenotazione di un planning di un film
       const movie = (await MovieMod.findOneAndUpdate({ _id: mongoose.Types.ObjectId(movieId), 'plans._id': mongoose.Types.ObjectId(planId) }, { $push: { 'plans.$.reservations': { userId: mongoose.Types.ObjectId(reservation.userId), fareId: mongoose.Types.ObjectId(reservation.fareId) } } }, { new: true, useFindAndModify: false })) as any;
+      if (!movie) res.status(404).json({ error: 'Movie plan not found by movieId and planId' });
+      else {
+        // Cerca la prenotazione per restituirla
+        const ret = (await MovieMod.findOne({ _id: mongoose.Types.ObjectId(movieId), 'plans._id': mongoose.Types.ObjectId(planId) }, { 'plans.$': 1 })
+          .populate('plans.reservations.user', '-__v -Password')
+          .populate('plans.reservations.fare', '-__v')) as any;
 
-      // Cerca la prenotazione per restituirla
-      const ret = (await MovieMod.findOne({ _id: mongoose.Types.ObjectId(movieId), 'plans._id': mongoose.Types.ObjectId(planId) }, { 'plans.$': 1 })
-        .populate('plans.reservations.user', '-__v -Password')
-        .populate('plans.reservations.fare', '-__v')) as any;
-
-      res.status(201).json(ret.plans[0].reservations.slice(-1));
+        res.status(201).json(ret.plans[0].reservations.slice(-1));
+      }
     } catch (err) {
-      console.log(err);
       res.status(500).json({ error: 'Internal server error.' });
     } finally {
       db && db.close();

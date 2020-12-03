@@ -28,7 +28,9 @@ export default class BookMovieComponent extends Vue {
   async bookMovie() {
     this.isLoading = true;
     try {
-      await axiosInstance.post(`/movies/${this.movie._id}/plannings/${this.movie.plans[0]._id}/reservations`, { userId: this.userId, fareId: this.selectedFare });
+      for (let i = 0; i < this.numberOfTickets; i++) {
+        await axiosInstance.post(`/movies/${this.movie._id}/plannings/${this.movie.plans[0]._id}/reservations`, { userId: this.userId, fareId: this.selectedFare });
+      }
 
       this.$message.success('Prenotazione effettuata con successo!');
     } catch (error) {

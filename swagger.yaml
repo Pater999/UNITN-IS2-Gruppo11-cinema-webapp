@@ -607,6 +607,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/ReservationListItemDTO"
+        400:
+          description: Query params are in bad format
         401:
           description: Admin not logged in
         403:
@@ -624,7 +626,7 @@ definitions:
         planningId:
           type: string
           description: "Movie's planning"
-          example: "1"
+          example: "5fc525fc8d23ca12703bb54a"
         room:
           type: object
           $ref: "#/definitions/CinemaRoomDTO"
@@ -649,7 +651,7 @@ definitions:
         movieId:
           type: string
           description: "Movie's Id"
-          example: "1"
+          example: "5fc525fc8d23ca12703bb54a"
         imageUrl:
           type: string
           description: "Movie's image Url"
@@ -702,7 +704,7 @@ definitions:
       id:
         type: string
         description: 'User id'
-        example: "1"
+        example: "5fc525fc8d23ca12703bb54a"
       username:
         type: string
         description: 'User username'
@@ -737,7 +739,7 @@ definitions:
         type: string
         format: "int32"
         description: "fare's id"
-        example: "1"
+        example: "5fc525fc8d23ca12703bb54a"
       name:
         type: string
         description: "fare's name"
@@ -764,7 +766,7 @@ definitions:
         type: string
         format: "int32"
         description: "comunication's id"
-        example: "1"
+        example: "5fc525fc8d23ca12703bb54a"
       title:
         type: string
         description: "comunication's title"
@@ -788,7 +790,7 @@ definitions:
       rowId:
         type: string
         description: "room's id"
-        example: "1"
+        example: "5fc525fc8d23ca12703bb54a"
       seatsNumber: 
         type: number
         description: "number of seats"
@@ -805,7 +807,7 @@ definitions:
       roomId:
         type: string
         description: "room's id"
-        example: "1"
+        example: "5fc525fc8d23ca12703bb54a"
       name:
         type: string
         description: "room's name"
@@ -826,7 +828,7 @@ definitions:
       reservationId:
         type: string
         description: "Movie's planning reservation id"
-        example: "1"
+        example: "5fc525fc8d23ca12703bb54a"
       fare:
         type: object
         $ref: "#/definitions/FareDTO"
@@ -838,17 +840,24 @@ definitions:
 
   ReservationListItemDTO:
     type: object
-    required:
-      - reservationId
-      - fare
-      - user
-      - movie
-    
+
     properties:
       reservationId:
         type: string
         description: "Reservation id"
-        example: "1"
+        example: "5fc908ca1d20234c986204f8"
+      movieId:
+        type: string
+        description: "Movie's Id"
+        example: "5fc525fc8d23ca12703bb54a"
+      movieTitle:
+        type: string
+        description: "Movie's title"
+        example: "Revenant"
+      date:
+        type: string
+        description: "comunication's date"
+        example: "2020-12-04T19:00:00.000Z"
       fare:
         type: object
         $ref: "#/definitions/FareDTO"
@@ -857,21 +866,3 @@ definitions:
         type: object
         $ref: "#/definitions/userDTO"
         description: "reservation's fare"
-      movie:
-        type: object
-        properties:
-          movieId:
-            type: string
-            description: "Movie's Id"
-            example: "1"
-          imageUrl:
-            type: string
-            description: "Movie's image Url"
-          title:
-            type: string
-            description: "Movie's title"
-            example: "Revenant"
-          desc:
-            type: string
-            description: "Movie desc"
-            example: "Durante una battuta di caccia nella selvaggia America, Hugh Glass viene attaccato da un orso e lasciato morire. Malgrado l'inimmaginabile dolore, il tradimento dell'amico fidato e l'inverno inclemente, l'uomo cerca inesorabilmente di sopravvivere."

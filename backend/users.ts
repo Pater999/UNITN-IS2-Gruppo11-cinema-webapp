@@ -5,8 +5,21 @@ import { RegisterDto } from './models/DTO/RegisterDTO';
 import Users from './Database/schemas/users';
 import { connUri, dbOptions, stage } from './Database/databaseService';
 
-
 const router = express.Router();
+
+router.get("", async (req: express.Request, res: express.Response) => {
+  let db = null;
+  try {
+    db = await mongoose.createConnection(connUri, dbOptions);
+    const UserMod = db.model('Users', Users);
+    const users = await UserMod.find().select("-__v -Password").exec();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error." });
+  } finally {
+    db && db.close();
+  }
+});
 
 router.post('', async (req: express.Request, res: express.Response) => {
   const { name, surname, username, email, password } = req.body;

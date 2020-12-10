@@ -24,7 +24,7 @@ export default class AdminFares extends Vue {
   }
 
   logOut() {
-    this.$router.replace('/admin/login');
+    this.$router.replace('/login');
   }
 
   async deleteFare(row: FareDto) {

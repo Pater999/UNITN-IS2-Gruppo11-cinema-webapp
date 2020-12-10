@@ -15,7 +15,7 @@ export default class Header extends Vue {
   logOut() {
     const r = this.role;
     this.$store.dispatch(LOGOUT);
-    if (r === 'admin') this.$router.replace('/admin/login');
+    if (r === 'admin') this.$router.replace('/login');
     else this.$router.replace('/login');
   }
 

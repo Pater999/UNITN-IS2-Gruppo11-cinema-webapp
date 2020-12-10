@@ -53,6 +53,7 @@ router.get('', validateTokenAdmin, async (req: express.Request, res: express.Res
     parsedStartDate = Date.parse(startDate);
     if (isNaN(parsedStartDate)) {
       res.status(400).json({ error: 'Bad request' });
+      return;
     }
   }
 
@@ -60,11 +61,17 @@ router.get('', validateTokenAdmin, async (req: express.Request, res: express.Res
     parsedEndDate = Date.parse(endDate);
     if (isNaN(parsedEndDate)) {
       res.status(400).json({ error: 'Bad request' });
+      return;
     }
   }
 
-  if (movieId) {
-    query.unshift({ $match: { _id: new mongoose.Types.ObjectId(movieId) } } as any);
+  try {
+    if (movieId) {
+      query.unshift({ $match: { _id: new mongoose.Types.ObjectId(movieId) } } as any);
+    }
+  } catch {
+    res.status(400).json({ error: 'Bad request' });
+    return;
   }
 
   if (parsedEndDate || parsedStartDate) {

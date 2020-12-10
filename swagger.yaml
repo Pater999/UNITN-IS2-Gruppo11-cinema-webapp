@@ -579,6 +579,38 @@ paths:
             description: Some fields are null or empty
           401:
             description: User not logged in
+  
+  /reservations:
+    get:
+      security:
+          - Bearer: []
+      parameters:
+        - in: query
+          name: startDate
+          type: string
+          format: date
+          description: Filter by movie start date
+        - in: query
+          name: endDate
+          type: string
+          format: date
+          description: Filter by movie end date
+        - in: query
+          name: movieId
+          type: string
+          description: Filter by movie id
+      summary: "List all reservations"
+      responses:
+        200:
+          description: "Collection of reservations"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ReservationListItemDTO"
+        401:
+          description: Admin not logged in
+        403:
+          description: Not authorized to do this action
             
 
 definitions:
@@ -786,6 +818,7 @@ definitions:
   ReservationDTO:
     type: object
     required:
+      - reservationId
       - fare
       - user
     
@@ -802,3 +835,43 @@ definitions:
         type: object
         $ref: "#/definitions/userDTO"
         description: "reservation's fare"
+
+  ReservationListItemDTO:
+    type: object
+    required:
+      - reservationId
+      - fare
+      - user
+      - movie
+    
+    properties:
+      reservationId:
+        type: string
+        description: "Reservation id"
+        example: "1"
+      fare:
+        type: object
+        $ref: "#/definitions/FareDTO"
+        description: "reservation's fare"
+      user:
+        type: object
+        $ref: "#/definitions/userDTO"
+        description: "reservation's fare"
+      movie:
+        type: object
+        properties:
+          movieId:
+            type: string
+            description: "Movie's Id"
+            example: "1"
+          imageUrl:
+            type: string
+            description: "Movie's image Url"
+          title:
+            type: string
+            description: "Movie's title"
+            example: "Revenant"
+          desc:
+            type: string
+            description: "Movie desc"
+            example: "Durante una battuta di caccia nella selvaggia America, Hugh Glass viene attaccato da un orso e lasciato morire. Malgrado l'inimmaginabile dolore, il tradimento dell'amico fidato e l'inverno inclemente, l'uomo cerca inesorabilmente di sopravvivere."

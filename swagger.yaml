@@ -55,7 +55,7 @@ paths:
           description: Username not found
         500:
           description: Internal server error
-
+          
   /users:
     get:
       summary: "List all the users"
@@ -111,7 +111,32 @@ paths:
           description: Username already taken
         500:
           description: Internal server error
-    
+  
+  /users/{userId}:
+    parameters:
+    - name: "userId"
+      in: "path"
+      description: "id of the user"
+      required: true
+      type: "string"
+    get:
+      security:
+        - Bearer: []
+      summary: Get User Info
+      responses:
+        200:
+          description: "User Info"
+          schema:
+            $ref: '#/definitions/userDTO'
+        400:
+          description: Some fields are null or empty
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+        404:
+          description: User not found
+  
   /fares:
     get:
       summary: "List all the tickets' fares"

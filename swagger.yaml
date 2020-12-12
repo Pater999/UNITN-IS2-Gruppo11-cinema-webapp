@@ -58,6 +58,8 @@ paths:
           
   /users:
     get:
+      security:
+          - Bearer: []
       summary: "List all the users"
       responses:
         200:
@@ -132,6 +134,40 @@ paths:
           description: Some fields are null or empty
         401:
           description: User not logged in
+        403:
+          description: Not authorized to do this action
+        404:
+          description: User not found
+    
+  /users/{userId}/change-role:  
+    parameters:
+    - name: "userId"
+      in: "path"
+      description: "id of the user"
+      required: true
+      type: "string"
+    put:
+      security:
+        - Bearer: []
+      summary: Update a user's role
+      parameters:
+        - in: body
+          name: role
+          required: true
+          schema:
+            type: object
+            properties:
+              role:
+                type: string
+                description: "User's role"
+                example: "admin"
+      responses:
+        200:
+          description: "Successful update, user's role update"
+          schema:
+            $ref: '#/definitions/userDTO'
+        401:
+          description: Admin not logged in
         403:
           description: Not authorized to do this action
         404:

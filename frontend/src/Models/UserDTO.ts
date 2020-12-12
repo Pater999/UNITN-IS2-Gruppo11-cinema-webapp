@@ -1,8 +1,8 @@
 export interface userDTO {
     _id: string;
-    role: string;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
+    Role: string;
+    Name: string;
+    Surname: string;
+    Username: string;
+    Email: string;
 }

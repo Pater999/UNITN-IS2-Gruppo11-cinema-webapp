@@ -2,6 +2,7 @@ import axiosInstance from '@/axios-instance';
 import { userDTO } from '@/Models/UserDTO';
 import { Component, Vue } from 'vue-property-decorator';
 
+
 @Component
 export default class AdminFares extends Vue {
   isLoading = false;
@@ -21,7 +22,7 @@ export default class AdminFares extends Vue {
   async getUsers() {
     this.isLoading = true;
     try {
-      const response = await axiosInstance.get('/Users');
+      const response = await axiosInstance.get('/users');
       this.Users = response.data as userDTO[];
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
@@ -30,10 +31,16 @@ export default class AdminFares extends Vue {
     }
   }
 
-  modifyUserRole(row: userDTO) {
-    //TODO - Storia #30
-    console.log(row)
+  async modifyUserRole(row: userDTO) {
+    this.isLoading = true;
+    try {
+      await axiosInstance.put(`/users/${row._id}/change-role`, {role: row.Role == 'admin' ? 'User' : 'admin'});
+      console.log(row.Role === 'admin' ? 'User' : 'admin')
+      this.getUsers();
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) this.$message.error(error.response.data.error);
+    } finally {
+      this.isLoading = false;
+    }
   }
-
-
 }

@@ -1,13 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { validateTokenAdmin } from './Utilities/authentication';
 import { RegisterDto } from './models/DTO/RegisterDTO';
 import Users from './Database/schemas/users';
 import { connUri, dbOptions, stage } from './Database/databaseService';
 
 const router = express.Router();
 
-router.get("", async (req: express.Request, res: express.Response) => {
+router.get("", validateTokenAdmin, async (req: express.Request, res: express.Response) => {
   let db = null;
   try {
     db = await mongoose.createConnection(connUri, dbOptions);
@@ -18,6 +19,31 @@ router.get("", async (req: express.Request, res: express.Response) => {
     res.status(500).json({ error: "Internal server error." });
   } finally {
     db && db.close();
+  }
+});
+
+router.put('/:userId/change-role', validateTokenAdmin, async (req: express.Request, res: express.Response) => {
+  let id = req.params.userId;
+  if (!id) res.status(400).json({ error: 'Bad request' });
+  else {
+    let role = req.body.role;
+
+    if (!role || (role !== "admin" && role !== "User")) res.status(400).json({ error: 'Bad request' });
+    else {
+      let db = null;
+      try {
+        db = await mongoose.createConnection(connUri, dbOptions);
+        const UserMod = db.model('Users', Users);
+        const elem = (await UserMod.findByIdAndUpdate(id, { Role:role }, { new: true, useFindAndModify: false }).select("-__v -Password").exec()) as any;
+        if (!elem) throw new Error();
+
+        res.status(200).json(elem);
+      } catch (err) {
+        res.status(404).json({ error: 'User not found' });
+      } finally {
+        db && db.close();
+      }
+    }
   }
 });
 

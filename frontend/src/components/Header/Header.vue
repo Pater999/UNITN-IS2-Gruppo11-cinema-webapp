@@ -3,6 +3,10 @@
     <CHeaderBrand class="ml-3" to="/">
       <h5>SmartCinema</h5>
     </CHeaderBrand>
+    <CHeaderBrand class="ml-3" to="/comunications">
+   
+      <h5>Annunci</h5>
+    </CHeaderBrand>
     <CHeaderNav class="ml-auto mr-4">
       <CDropdown inNav class="c-header-nav-items mx-2" placement="bottom-end" add-menu-classes="pt-0" :offset="[0, 10]">
         <template #toggler>

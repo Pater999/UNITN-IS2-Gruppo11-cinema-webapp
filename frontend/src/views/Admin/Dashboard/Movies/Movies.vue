@@ -11,25 +11,29 @@
       >
     </div>
     <el-collapse v-for="movie in movies" :key="movie._id">
-      <el-collapse-item :name="movie.title" >
+      <el-collapse-item :name="movie.title">
         <template slot="title"
-          ><div style="width:100%" class=" d-flex align-items-center">
-            
+          ><div style="width: 100%" class="d-flex align-items-center">
             <img
-              class="mr-3 roundedFilm"
+              class="mr-3"
               :src="movie.imageUrl"
-              width="75px"
-              height="75px"
+              height="150px"
+              width="100px"
               :alt="movie.title"
             />
-            
+
             <h3>{{ movie.title }}</h3>
             <div class="ml-auto">
-            <el-button class="mr-5" type="danger" @click.native.stop="deleteFilm(movie)">Elimina</el-button>
+              <el-button
+                class="mr-5"
+                type="danger"
+                @click.native.stop="deleteFilm(movie)"
+                >Elimina</el-button
+              >
             </div>
           </div>
         </template>
-        <div v-for="plan in movie.plans" :key="`${plan.date}-${plan.room._id}`">
+        <div style="margin:15px" v-for="plan in movie.plans" :key="`${plan.date}-${plan.room._id}`">
           <h5>{{ plan.room.name }} - {{ printDate(new Date(plan.date)) }}</h5>
         </div>
       </el-collapse-item>

@@ -53,7 +53,7 @@ router.post('', validateTokenAdmin, async (req: express.Request, res: express.Re
     let db = null;
     try {
       db = await mongoose.createConnection(connUri, dbOptions);
-      const MovieMod = db.model('Movies', Movies);
+      const MovieMod = <any> db.model('Movies', Movies);
       const movie = (await MovieMod.create(elem)) as any;
       res.status(201).json({
         _id: movie._id,

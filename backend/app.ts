@@ -5,8 +5,11 @@ import { fares } from './fares';
 import { rooms } from './rooms';
 import { movies } from './movies';
 import { users } from './users';
+<<<<<<< Updated upstream
 import { reservations } from './reservations';
 import { comunications } from './comunications';
+
+>>>>>>> Stashed changes
 
 const app = express();
 
@@ -40,8 +43,11 @@ app.use('/api/v1/fares', fares);
 app.use('/api/v1/rooms', rooms);
 app.use('/api/v1/movies', movies);
 app.use('/api/v1/users', users);
+<<<<<<< Updated upstream
 app.use('/api/v1/reservations', reservations);
 app.use('/api/v1/comunications', comunications);
+
+>>>>>>> Stashed changes
 
 app.all('*', (req, res) => {     res.redirect('/') })
 

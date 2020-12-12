@@ -88,6 +88,14 @@ const routes: Array<RouteConfig> = [
   },
 
   {
+    path: '/comunications',
+    name: 'users-comunications-page',
+    component: UsersComunications,
+    meta: {
+      title: `${appTitle} - Users comunication`
+    }
+  },
+  {
     path: '/404',
     name: '404-page',
     component: ErrorPage,

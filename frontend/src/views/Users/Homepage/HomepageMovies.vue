@@ -6,7 +6,7 @@
         <h3>Programmazione per il giorno {{ new Date(dateTimeSelected).toLocaleDateString() }}</h3>
         <div class="ml-auto">
           <el-button class="mr-1" icon="el-icon-back" @click="changeDate(1)" />
-          <el-date-picker class="mr-1" lang="it" v-model="dateTimeSelected" type="date" @change="dateChanged()" />
+          <el-date-picker :clearable="false" class="mr-1" lang="it" v-model="dateTimeSelected" type="date" @change="dateChanged()" />
           <el-button icon="el-icon-right" @click="changeDate(2)" />
         </div>
       </div>

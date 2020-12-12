@@ -81,9 +81,9 @@ export default class HomepageMovies extends Vue {
 
   changeDate(value: number) {
     if (value === 1) {
-      this.dateTimeSelected.setDate(this.dateTimeSelected.getDate() - 1)
+      this.dateTimeSelected = new Date(this.dateTimeSelected.setDate(this.dateTimeSelected.getDate() - 1));
     } else {
-      this.dateTimeSelected.setDate(this.dateTimeSelected.getDate() + 1)
+      this.dateTimeSelected =  new Date(this.dateTimeSelected.setDate(this.dateTimeSelected.getDate() + 1));
     }
     this.dateChanged();
   }

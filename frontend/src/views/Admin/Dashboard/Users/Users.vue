@@ -1,7 +1,7 @@
 <template>
   <div v-loading="isLoading">
-    <div class="d-flex mb-3 mt-5">
-      <h3>Users</h3>
+    <div class="d-flex mt-2">
+      <h3>Utenti</h3>
     </div>
     <template>
       <el-table :data="Users" style="width: 100%" class="mt-3">

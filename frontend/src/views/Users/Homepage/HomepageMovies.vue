@@ -2,9 +2,19 @@
   <CWrapper>
     <Header />
     <div v-loading="isLoading" class="container">
-      <div id="c" class=" d-flex flex-row-reverse align-items-start">
-        <el-date-picker class="mt-4" lang="it" v-model="dateTimeSelected" type="date" @change="dateChanged()"></el-date-picker>
+      <div class=" d-flex mt-4 mb-4">
+        <h3>Programmazione per il giorno {{ new Date(dateTimeSelected).toLocaleDateString() }}</h3>
+        <div class="ml-auto">
+          <el-button class="mr-1" icon="el-icon-back" @click="changeDate(1)" />
+          <el-date-picker class="mr-1" lang="it" v-model="dateTimeSelected" type="date" @change="dateChanged()" />
+          <el-button icon="el-icon-right" @click="changeDate(2)" />
+        </div>
       </div>
+
+      <el-alert v-if="!areThereMovies" type="info" center show-icon :closable="false">
+        <div slot="title"><h3>NESSUN FILM TROVATO!</h3></div>
+        <strong>Nessun film disponibile in questa data. Prova un altra data!</strong>
+      </el-alert>
 
       <div v-for="movie in movies" :key="movie._id">
         <div class="card mb-3">
@@ -39,6 +49,7 @@
         </div>
       </div>
     </div>
+
     <BookMovieComponent v-if="selectedMovie" :dialogIsVisible.sync="bookingDialogVisible" :movie="selectedMovie" />
   </CWrapper>
 </template>

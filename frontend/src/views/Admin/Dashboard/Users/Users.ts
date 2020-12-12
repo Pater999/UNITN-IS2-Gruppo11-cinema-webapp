@@ -1,6 +1,5 @@
 import axiosInstance from '@/axios-instance';
 import { userDTO } from '@/Models/UserDTO';
-import { Form } from 'element-ui';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component

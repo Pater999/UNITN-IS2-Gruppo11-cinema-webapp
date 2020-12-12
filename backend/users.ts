@@ -23,6 +23,70 @@ router.get("", validateTokenAdmin, async (req: express.Request, res: express.Res
   }
 });
 
+
+router.get("/:userId", validateTokenUser, async (req: express.Request, res: express.Response) => {
+  let db = null;
+  let userId = req.params.userId;
+  const tokenUsername = res.locals.username;
+  if (userId && tokenUsername) {
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const UserMod = db.model('Users', Users);
+      const user = await UserMod.findOne({ Username: tokenUsername }).select("-__v -Password").exec();
+      if (user) {
+        if (user._id == userId)
+          res.status(200).json(user);
+        else
+          res.status(401);
+      }
+      else
+        res.status(404).json({ error: "User not found" });
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error." });
+    } finally {
+      db && db.close();
+    }
+  }
+  else
+    res.status(400).json({ error: 'UserId non valido' });
+});
+
+
+router.put("/:userId/change-password", validateTokenUser, async (req: express.Request, res: express.Response) => {
+  let db = null;
+  let userId = req.params.userId;
+  const tokenUsername = res.locals.username;
+  const { nuovaPassword } = req.body;
+  const pwdHashed = await bcrypt.hash(nuovaPassword, stage.saltingRounds);
+
+  if (userId && tokenUsername && nuovaPassword) {
+    try {
+      db = await mongoose.createConnection(connUri, dbOptions);
+      const UserMod = db.model('Users', Users);
+      const user = await UserMod.findById(userId).select("-__v -Password").exec() as any;
+      if (user) 
+      {
+        if (user.Username == tokenUsername)
+        {
+          const userUpdated = await UserMod.findByIdAndUpdate(userId, { Password: pwdHashed }, { new: true, useFindAndModify: false }).select("-__v -Password").exec() as any;
+          if (userUpdated)
+            res.status(200).json({ message: "Password modificata con successo!" });    
+        }
+        else
+          res.status(401);      
+      }
+      else
+        res.status(404).json({ error: "User not found" });
+    } catch (err) {
+      res.status(500).json({ error: "Internal server error." });
+    } finally {
+      db && db.close();
+    }
+  }
+  else
+    res.status(400).json({ error: "Bad request" });
+});
+
 router.put("/:userId/change-role", validateTokenAdmin, async (req: express.Request, res: express.Response) => {
   let id = req.params.userId;
   if (!id) res.status(400).json({ error: "Bad request" });

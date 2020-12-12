@@ -139,6 +139,38 @@ paths:
         404:
           description: User not found
     
+    
+  /users/{userId}/change-password:  
+    parameters:
+    - name: "userId"
+      in: "path" 
+      description: "id of the user"
+      required: true
+      type: "string"
+    put:
+      security:
+        - Bearer: []
+      summary: Update a user's password
+      parameters:
+        - in: body
+          name: newPassword
+          required: true
+          schema:
+            type: object
+            properties:
+              role:
+                type: string
+                description: "User's new Password"
+      responses:
+        200:
+          description: "Successful update, user's password changed"
+          schema:
+            $ref: '#/definitions/userDTO'
+        401:
+          description: Not authorized to do this action
+        404:
+          description: User not found
+    
   /users/{userId}/change-role:  
     parameters:
     - name: "userId"

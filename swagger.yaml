@@ -136,7 +136,32 @@ paths:
           description: Not authorized to do this action
         404:
           description: User not found
-  
+
+  /users/{userId}/reservations:
+    parameters:
+      - name: "userId"
+        in: "path"
+        description: "id of the user"
+        required: true
+        type: "string"
+    get:
+      security:
+          - Bearer: []
+      summary: "List all user's reservations"
+      responses:
+        200:
+          description: "Collection users'of reservations"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UserReservationListItemDTO"
+        400:
+          description: Query params are in bad format
+        401:
+          description: User not logged in
+        403:
+          description: Not authorized to do this action
+
   /fares:
     get:
       summary: "List all the tickets' fares"
@@ -890,4 +915,29 @@ definitions:
       user:
         type: object
         $ref: "#/definitions/userDTO"
+        description: "reservation's fare"
+        
+  UserReservationListItemDTO:
+    type: object
+
+    properties:
+      reservationId:
+        type: string
+        description: "Reservation id"
+        example: "5fc908ca1d20234c986204f8"
+      movieId:
+        type: string
+        description: "Movie's Id"
+        example: "5fc525fc8d23ca12703bb54a"
+      movieTitle:
+        type: string
+        description: "Movie's title"
+        example: "Revenant"
+      date:
+        type: string
+        description: "comunication's date"
+        example: "2020-12-04T19:00:00.000Z"
+      fare:
+        type: object
+        $ref: "#/definitions/FareDTO"
         description: "reservation's fare"

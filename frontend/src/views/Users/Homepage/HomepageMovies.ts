@@ -71,7 +71,20 @@ export default class HomepageMovies extends Vue {
     }
   }
 
+  get areThereMovies() {
+    return this.movies.length > 0;
+  }
+
   get isButtonDisabled() {
     return !(this.dateTimeSelected.setHours(0, 0, 0, 0) >= new Date(Date.now()).setHours(0, 0, 0, 0));
+  }
+
+  changeDate(value: number) {
+    if (value === 1) {
+      this.dateTimeSelected.setDate(this.dateTimeSelected.getDate() - 1)
+    } else {
+      this.dateTimeSelected.setDate(this.dateTimeSelected.getDate() + 1)
+    }
+    this.dateChanged();
   }
 }

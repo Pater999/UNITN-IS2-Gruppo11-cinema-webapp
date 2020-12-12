@@ -1,6 +1,6 @@
 <template>
   <div v-loading="isLoading">
-    <div class="d-flex mb-3 mt-5">
+    <div class="d-flex mt-2 mb-3">
       <h3>Programmazione Film</h3>
       <el-button
         class="ml-auto"
@@ -11,7 +11,7 @@
       >
     </div>
     <el-collapse v-for="movie in movies" :key="movie._id">
-      <el-collapse-item :name="movie.title">
+      <el-collapse-item :name="movie.title" >
         <template slot="title"
           ><div style="width:100%" class=" d-flex align-items-center">
             
@@ -130,4 +130,4 @@
 </template>
 
 <script lang="ts" src="./Movies.ts" />
-<style scoped lang="scss" src="./Movies.scss" />
+<style lang="scss" src="./Movies.scss" />

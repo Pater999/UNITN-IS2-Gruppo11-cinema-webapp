@@ -3,10 +3,15 @@
     <Header />
     <div class="container-fluid">
       <div class="row m-4">
-        <div class="col-md-6"><Fares /></div>
-        <div class="col-md-6"><AdminRooms /></div>
-        <div class="col-md-6"><AdminMovies /></div>
-        <div class="col-md-6"><AdminUsers /></div>
+        <div class="col">
+          <el-tabs v-model="activeName">
+            <el-tab-pane label="Tariffe" name="Fares"><Fares /></el-tab-pane>
+            <el-tab-pane label="Sale" name="Rooms"><AdminRooms /></el-tab-pane>
+            <el-tab-pane label="Film" name="Movies"><AdminMovies /></el-tab-pane>
+            <el-tab-pane label="Utenti" name="Users"><AdminUsers /></el-tab-pane>
+            <el-tab-pane label="Prenotazioni" name="Reservations"> <Reservations /></el-tab-pane>
+          </el-tabs>
+        </div>
       </div>
     </div>
   </CWrapper>

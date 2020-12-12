@@ -1,6 +1,6 @@
 <template>
   <div v-loading="isLoading">
-    <div class="d-flex">
+    <div class="d-flex mt-2">
       <h3>Tariffe</h3>
       <el-button
         class="ml-auto"

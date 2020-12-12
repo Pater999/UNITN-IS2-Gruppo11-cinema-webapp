@@ -11,6 +11,7 @@ export default class Header extends Vue {
   username!: string;
   isAuthenticated!: boolean;
   role!: string;
+  accountDialogVisible = false;
 
   logOut() {
     const r = this.role;
@@ -25,5 +26,10 @@ export default class Header extends Vue {
 
   goToAdminDashboard() {
     this.$router.push('/admin/dashboard');
+  }
+
+  account()
+  {
+    this.$router.push('/account');
   }
 }

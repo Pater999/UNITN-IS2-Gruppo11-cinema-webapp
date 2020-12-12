@@ -9,6 +9,7 @@ const ErrorPage = () => import(/* webpackChunkName: "404-page" */ '../views/404/
 const UsersLoginPage = () => import(/* webpackChunkName: "users-login-page" */ '../views/Users/Login/UserLogin.vue');
 const UsersRegisterPage = () => import(/* webpackChunkName: "users-register-page" */ '../views/Users/Register/UserRegister.vue');
 const UsersHomePage = () => import(/* webpackChunkName: "users-home-page" */ '../views/Users/Homepage/HomepageMovies.vue');
+const AccountPage = () => import(/* webpackChunkName: "account-page" */ '../views/Users/Account/Account.vue');
 const UsersComunications = () => import(/* webpackChunkName: "users-comunications-page" */ '../views/Users/Comunications/UsersComunications.vue');
 
 
@@ -59,6 +60,14 @@ const routes: Array<RouteConfig> = [
     component: UsersLoginPage,
     meta: {
       title: `${appTitle} - Users login`
+    }
+  },
+  {
+    path: '/account',
+    name: 'account-page',
+    component: AccountPage,
+    meta: {
+      title: `${appTitle} - Account`
     }
   },
   {

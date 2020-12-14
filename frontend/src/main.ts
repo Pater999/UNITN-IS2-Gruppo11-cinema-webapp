@@ -18,7 +18,7 @@ import locale from 'element-ui/lib/locale/lang/it';
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSignOutAlt, faUser, faCouch, faSignInAlt, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUser, faCouch, faSignInAlt, faUserCog, faAddressCard } from '@fortawesome/free-solid-svg-icons';
 
 import App from './App.vue';
 import router from './router';
@@ -37,6 +37,7 @@ library.add(faSignOutAlt);
 library.add(faSignInAlt);
 library.add(faCouch);
 library.add(faUserCog);
+library.add(faAddressCard);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

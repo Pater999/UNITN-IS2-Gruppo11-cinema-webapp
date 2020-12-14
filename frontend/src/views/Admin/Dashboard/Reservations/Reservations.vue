@@ -31,7 +31,7 @@
           {{ scope.row.fare.name }}
         </template>
       </el-table-column>
-      <el-table-column label="Tariffa" width="80px">
+      <el-table-column label="Prezzo" width="80px">
         <template slot-scope="scope"> {{ scope.row.fare.price }}€ </template>
       </el-table-column>
     </el-table>

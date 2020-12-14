@@ -4,7 +4,6 @@
       <h5>SmartCinema</h5>
     </CHeaderBrand>
     <CHeaderBrand class="ml-3" to="/comunications">
-   
       <h5>Annunci</h5>
     </CHeaderBrand>
     <CHeaderNav class="ml-auto mr-4">
@@ -20,7 +19,7 @@
           <span class="mr-2">Admin dashboard</span>
         </CDropdownItem>
         <CDropdownItem v-if="isAuthenticated" @click="account">
-          <font-awesome-icon class="mr-3" />
+          <font-awesome-icon icon="address-card" class="mr-3" />
           <span class="mr-2">Account</span>
         </CDropdownItem>
         <CDropdownItem v-if="isAuthenticated" @click="logOut">

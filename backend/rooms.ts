@@ -33,7 +33,7 @@ router.post('', validateTokenAdmin, async (req: express.Request, res: express.Re
 
   if (!name) res.status(400).json({ error: 'Bad request' });
   else {
-    const elem = { name, rows: [] };
+    const elem = { name, rows: [] } as any;
     let db = null;
     try {
       db = await mongoose.createConnection(connUri, dbOptions);

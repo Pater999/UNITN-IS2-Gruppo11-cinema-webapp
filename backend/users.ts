@@ -120,7 +120,7 @@ router.post("", async (req: express.Request, res: express.Response) => {
   } else {
     try {
       const hashedPass = await bcrypt.hash(password, stage.saltingRounds);
-      const elem = new RegisterDto(name, surname, username, email, hashedPass);
+      const elem = new RegisterDto(name, surname, username, email, hashedPass) as any;
       let db = null;
       try {
         db = await mongoose.createConnection(connUri, dbOptions);

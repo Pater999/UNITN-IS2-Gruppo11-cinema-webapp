@@ -27,7 +27,7 @@ router.post("", validateTokenAdmin, async (req: express.Request, res: express.Re
 
   if (!title || !desc || !date) res.status(400).json({ error: "Some Fields are null or empty!" });
   else {
-    const elem = { title, desc, date };
+    const elem = { title, desc, date } as any;
     let db = null;
     try {
       db = await mongoose.createConnection(connUri, dbOptions);

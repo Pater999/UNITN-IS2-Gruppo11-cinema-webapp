@@ -28,7 +28,7 @@ router.post("", validateTokenAdmin, async (req: express.Request, res: express.Re
 
   if (!name || isNaN(price) || !desc) res.status(400).json({ error: "Some Fields are null or empty!" });
   else {
-    const elem = { name, price, desc };
+    const elem = { name, price, desc } as any;
     let db = null;
     try {
       db = await mongoose.createConnection(connUri, dbOptions);
